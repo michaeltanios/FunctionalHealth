@@ -7,9 +7,13 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function Education() {
+  const [activeCategory, setActiveCategory] = useState("All");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const categories = ["All", "Recovery", "Aging", "Nutrition", "Science", "Caregiving", "Research"];
 
   const articles = [
     {
@@ -38,7 +42,7 @@ export default function Education() {
     },
     {
       title: "Maintaining Functional Independence as You Age",
-      category: "Longevity",
+      category: "Science",
       readTime: "6 min read",
       excerpt: "Independence isn't just about strength — it's about the cellular energy to perform daily tasks. Learn how muscle health and ATP production connect to long-term autonomy."
     },
@@ -49,6 +53,10 @@ export default function Education() {
       excerpt: "Supporting a loved one through recovery? Understand the nutritional needs that matter most, and how targeted supplementation can support better outcomes."
     }
   ];
+
+  const filteredArticles = activeCategory === "All" 
+    ? articles 
+    : articles.filter(article => article.category === activeCategory);
 
   return (
     <div className="flex flex-col">
@@ -66,6 +74,28 @@ export default function Education() {
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
               Clear, evidence-based articles on muscle health, recovery, and the science of aging — written by our clinical team.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Filter Section */}
+      <section className="py-8 bg-background border-b sticky top-[64px] z-30 backdrop-blur-md bg-background/80">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 md:pb-0 no-scrollbar">
+            {categories.map((category) => (
+              <Button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                variant={activeCategory === category ? "default" : "outline"}
+                className={`rounded-full px-6 whitespace-nowrap transition-all duration-200 ${
+                  activeCategory === category 
+                    ? "bg-[#4F8F5A] hover:bg-[#4F8F5A]/90 text-white border-transparent" 
+                    : "border-border hover:border-functional-green/30 hover:bg-functional-green/5 text-muted-foreground"
+                }`}
+              >
+                {category}
+              </Button>
+            ))}
           </div>
         </div>
       </section>
@@ -104,7 +134,7 @@ export default function Education() {
       <section className="py-12 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articles.map((article, index) => (
+            {filteredArticles.map((article, index) => (
               <Card key={index} className="border border-border/50 shadow-sm hover:shadow-md transition-all duration-300 rounded-2xl bg-white flex flex-col h-full">
                 <CardContent className="p-8 space-y-6 flex flex-col h-full">
                   <div className="flex items-center justify-between">

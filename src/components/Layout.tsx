@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, Activity, ShieldCheck, Microscope, BookOpen, Info } from "lucide-react";
+import { Menu, X, Activity, ShieldCheck, Microscope, BookOpen, Info, Home } from "lucide-react";
 import { useState, useEffect } from "react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,7 @@ export default function Layout({ children }: LayoutProps) {
   }, [location]);
 
   const navLinks = [
+    { name: "Home", href: "/", icon: Home },
     { name: "Science", href: "/science", icon: Microscope },
     { name: "Education", href: "/education", icon: BookOpen },
     { name: "About", href: "/about", icon: Info },
@@ -53,7 +54,7 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
             ))}
             <Button asChild size="sm" className="rounded-full px-6">
-              <Link to="/product">Shop Now</Link>
+              <Link to="/product">Begin Your Recovery</Link>
             </Button>
           </nav>
 
@@ -94,7 +95,7 @@ export default function Layout({ children }: LayoutProps) {
                   </Link>
                 ))}
                 <Button asChild className="w-full rounded-full">
-                  <Link to="/product">Shop Now</Link>
+                  <Link to="/product">Begin Your Recovery</Link>
                 </Button>
               </motion.div>
             </>
@@ -142,7 +143,7 @@ export default function Layout({ children }: LayoutProps) {
             <div>
               <h4 className="font-serif font-bold mb-4">Products</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link to="/product" className="hover:text-primary transition-colors">Clinical Creatine</Link></li>
+                <li><Link to="/product" className="hover:text-primary transition-colors">Micronized Creatine Monohydrate</Link></li>
                 <li><Link to="/product" className="hover:text-primary transition-colors">Recovery Protocol</Link></li>
               </ul>
             </div>

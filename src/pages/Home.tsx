@@ -70,7 +70,7 @@ export default function Home() {
                   </Link>
                 </Button>
                 <Button asChild size="lg" className="rounded-full px-8 text-base bg-functional-green hover:bg-functional-green/90">
-                  <Link to="/product">View Clinical Products</Link>
+                  <Link to="/product">Begin Your Recovery</Link>
                 </Button>
               </div>
             </div>
@@ -85,7 +85,7 @@ export default function Home() {
               </div>
               <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-3xl shadow-xl border border-border/50 max-w-[200px] animate-in fade-in slide-in-from-bottom-4 duration-1000">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-2 h-2 rounded-full bg-check-green animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-functional-green animate-pulse" />
                   <span className="text-[10px] font-bold uppercase tracking-widest text-clinical-blue">Clinical Standard</span>
                 </div>
                 <p className="text-xs font-medium text-foreground leading-relaxed">
@@ -167,7 +167,7 @@ export default function Home() {
                   "Decreased functional mobility"
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3">
-                    <CheckCircle2 className="text-check-green mt-1 shrink-0" size={20} />
+                    <CheckCircle2 className="text-functional-green mt-1 shrink-0" size={20} />
                     <span className="text-foreground font-medium">{item}</span>
                   </div>
                 ))}
@@ -210,7 +210,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="border-none shadow-sm bg-white">
               <CardContent className="pt-8">
-                <div className="w-12 h-12 rounded-full bg-sunrise-yellow/30 flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-full bg-functional-green/10 flex items-center justify-center mb-6">
                   <Activity className="text-functional-green" size={24} />
                 </div>
                 <h3 className="text-xl font-serif font-bold mb-3 text-functional-green">Muscle Energy</h3>
@@ -221,7 +221,7 @@ export default function Home() {
             </Card>
             <Card className="border-none shadow-sm bg-white">
               <CardContent className="pt-8">
-                <div className="w-12 h-12 rounded-full bg-sunrise-yellow/30 flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-full bg-functional-green/10 flex items-center justify-center mb-6">
                   <ShieldCheck className="text-functional-green" size={24} />
                 </div>
                 <h3 className="text-xl font-serif font-bold mb-3 text-functional-green">Functional Strength</h3>
@@ -232,7 +232,7 @@ export default function Home() {
             </Card>
             <Card className="border-none shadow-sm bg-white">
               <CardContent className="pt-8">
-                <div className="w-12 h-12 rounded-full bg-sunrise-yellow/30 flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-full bg-functional-green/10 flex items-center justify-center mb-6">
                   <HeartPulse className="text-functional-green" size={24} />
                 </div>
                 <h3 className="text-xl font-serif font-bold mb-3 text-functional-green">Cognitive Support</h3>
@@ -274,7 +274,7 @@ export default function Home() {
               <p className="text-white/80 text-sm mb-6 leading-relaxed">
                 Our products undergo rigorous testing for purity, potency, and bioavailability. We ensure that what is on the label is exactly what is in the bottle.
               </p>
-              <Button asChild variant="secondary" className="w-full rounded-full bg-white text-functional-green hover:bg-sunrise-yellow">
+              <Button asChild variant="secondary" className="w-full rounded-full bg-white text-functional-green hover:bg-clinical-blue hover:text-white">
                 <Link to="/science">Read the Research</Link>
               </Button>
             </div>

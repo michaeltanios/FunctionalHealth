@@ -41,15 +41,10 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Custom Brand Colors */
+  /* Custom Brand Colors - Simplified to 3 Primary Colors */
   --color-functional-green: #4F8F5A;
   --color-clinical-blue: #2F6F8F;
-  --color-sunrise-yellow: #F4E6B3;
   --color-warm-cream: #F8F3E7;
-  --color-recovery-green: #A9CFA3;
-  --color-longevity-teal: #7FB1A8;
-  --color-pathway: #FFF4D6;
-  --color-check-green: #6FAF6A;
 
   --keyframes-accordion-down: {
     from {
@@ -92,8 +87,8 @@
   --muted: #F8F3E7;
   --muted-foreground: #666666;
   
-  --accent: #F4E6B3; /* Sunrise Yellow */
-  --accent-foreground: #4F8F5A;
+  --accent: #4F8F5A; /* Functional Green */
+  --accent-foreground: #FFFFFF;
   
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
@@ -125,7 +120,7 @@
   --muted: #242723;
   --muted-foreground: #A9CFA3;
   
-  --accent: #F4E6B3;
+  --accent: #6FAF6A;
   --accent-foreground: #1A1C19;
   
   --border: #333333;
@@ -147,9 +142,9 @@
 
 @layer utilities {
   .bg-warm-sunrise {
-    background: linear-gradient(to bottom, #A9CFA3 0%, #F8F3E7 60%, #F8F3E7 100%);
+    background: linear-gradient(to bottom, #4F8F5A15 0%, #F8F3E7 60%, #F8F3E7 100%);
   }
   .bg-pathway {
-    background-color: #FFF4D6;
+    background-color: #F8F3E7;
   }
 }
