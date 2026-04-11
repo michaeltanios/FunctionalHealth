@@ -32,6 +32,29 @@ h2{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:400;line-height:1.2;letter-spa
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
 .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
 .four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+@media(max-width:768px){
+  .two-col{grid-template-columns:1fr;gap:2rem}
+  .three-col{grid-template-columns:1fr;gap:1.25rem}
+  .four-col{grid-template-columns:1fr 1fr;gap:1rem}
+  .product-grid{grid-template-columns:1fr}
+  nav{padding:0 1.25rem}
+  .nav-tabs{display:none}
+  section{padding:3rem 1.25rem}
+  .hero-wrap{padding:4rem 1.25rem 3rem}
+  .product-hero{padding:2.5rem 1.25rem}
+  h1{font-size:2rem}
+  .stat-grid{grid-template-columns:1fr}
+  .trust-bar{padding:1rem 1.25rem}
+  .trust-bar-inner{gap:1rem}
+  .waitlist-form{flex-direction:column}
+  .waitlist-form button{width:100%}
+  .science-sub-tabs{width:100%}
+  .sci-tab{flex:1;text-align:center}
+  .atp-flow{flex-direction:column;gap:0.5rem}
+  .pillars-inner{grid-template-columns:1fr}
+  footer{padding:2rem 1.25rem}
+  .footer-inner{flex-direction:column;text-align:center}
+}
 .card{background:#fff;border:1px solid #D9D9D9;border-radius:8px;padding:1.75rem}
 .card-green{background:#fff;border:1px solid #A9CFA3;border-radius:8px;padding:1.75rem}
 .card h3{font-size:17px;font-weight:500;color:#1a2a1f;margin-bottom:0.6rem;line-height:1.35}
