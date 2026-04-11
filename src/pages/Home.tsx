@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { ArrowRight, ShieldCheck, Activity, Microscope, HeartPulse, CheckCircle2 } from "lucide-react";
 
 import { useState, useEffect } from "react";
@@ -59,6 +60,38 @@ export default function Home() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Waitlist Section */}
+      <section className="py-24 bg-background border-b">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-2xl mx-auto space-y-8">
+            <div className="space-y-4">
+              <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-clinical-blue">Early Access</span>
+              <h2 className="text-4xl md:text-6xl font-serif font-bold text-black leading-tight">
+                Be first to know when we launch.
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Waitlist members receive early access, founder pricing, and updates directly from our research team.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+              <Input 
+                type="email" 
+                placeholder="your@email.com" 
+                className="rounded-md h-14 bg-white border-border focus-visible:ring-functional-green text-lg px-6"
+              />
+              <Button className="rounded-md h-14 px-10 bg-functional-green hover:bg-functional-green/90 font-bold text-white whitespace-nowrap">
+                Join waitlist
+              </Button>
+            </div>
+            
+            <p className="text-sm text-muted-foreground/60">
+              No spam. Research updates only.
+            </p>
           </div>
         </div>
       </section>
