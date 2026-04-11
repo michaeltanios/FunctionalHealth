@@ -438,7 +438,21 @@ function joinWaitlist(inputId,successId){
   var el=document.getElementById(inputId);
   var ok=document.getElementById(successId);
   if(!el.value||!el.value.includes('@')){el.style.borderColor='#e05050';setTimeout(function(){el.style.borderColor='#D9D9D9'},1500);return;}
-  el.closest('.waitlist-form').style.display='none';
-  ok.style.display='block';
+  fetch('/api/waitlist',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:el.value})
+  }).then(function(r){
+    if(r.ok){
+      el.closest('.waitlist-form').style.display='none';
+      ok.style.display='block';
+    } else {
+      el.style.borderColor='#e05050';
+      setTimeout(function(){el.style.borderColor='#D9D9D9'},1500);
+    }
+  }).catch(function(){
+    el.closest('.waitlist-form').style.display='none';
+    ok.style.display='block';
+  });
 }
 </script>
