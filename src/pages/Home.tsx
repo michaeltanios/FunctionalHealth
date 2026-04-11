@@ -5,15 +5,48 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, ShieldCheck, Activity, Microscope, HeartPulse, CheckCircle2 } from "lucide-react";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Home() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [message, setMessage] = useState("");
 
-  return (
-    <div className="flex flex-col">
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!email) return;
+
+      setStatus("loading");
+      try {
+        const response = await fetch("/api/waitlist", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        if (response.ok) {
+          setStatus("success");
+          setMessage("Thank you! You've been added to our waitlist.");
+          setEmail("");
+        } else {
+          const data = await response.json();
+          setStatus("error");
+          setMessage(data.error || "Something went wrong. Please try again.");
+        }
+      } catch (err) {
+        setStatus("error");
+        setMessage("Failed to connect to the server. Please check your connection.");
+      }
+    };
+
+    return (
+      <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 overflow-hidden bg-warm-sunrise">
         <div className="container mx-auto px-4 relative z-10">
@@ -78,16 +111,35 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
               <Input 
                 type="email" 
                 placeholder="your@email.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={status === "loading"}
+                required
                 className="rounded-md h-14 bg-white border-border focus-visible:ring-functional-green text-lg px-6"
               />
-              <Button className="rounded-md h-14 px-10 bg-functional-green hover:bg-functional-green/90 font-bold text-white whitespace-nowrap">
-                Join waitlist
+              <Button 
+                type="submit"
+                disabled={status === "loading"}
+                className="rounded-md h-14 px-10 bg-functional-green hover:bg-functional-green/90 font-bold text-white whitespace-nowrap"
+              >
+                {status === "loading" ? "Joining..." : "Join waitlist"}
               </Button>
-            </div>
+            </form>
+            
+            {status === "success" && (
+              <p className="text-sm font-medium text-functional-green animate-in fade-in slide-in-from-top-1">
+                {message}
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-sm font-medium text-destructive animate-in fade-in slide-in-from-top-1">
+                {message}
+              </p>
+            )}
             
             <p className="text-sm text-muted-foreground/60">
               No spam. Research updates only.
