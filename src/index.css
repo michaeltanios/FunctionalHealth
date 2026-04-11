@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Custom Brand Colors */
+  --color-functional-green: #4F8F5A;
+  --color-clinical-blue: #2F6F8F;
+  --color-sunrise-yellow: #F4E6B3;
+  --color-warm-cream: #F8F3E7;
+  --color-recovery-green: #A9CFA3;
+  --color-longevity-teal: #7FB1A8;
+  --color-pathway: #FFF4D6;
+  --color-check-green: #6FAF6A;
+
+  --keyframes-accordion-down: {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  };
+  --keyframes-accordion-up: {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  };
+
+  --animation-accordion-down: accordion-down 0.2s ease-out;
+  --animation-accordion-up: accordion-up 0.2s ease-out;
+}
+
+:root {
+  /* FunctionalHealth Brand Palette */
+  --background: #F8F3E7; /* Warm Cream */
+  --foreground: #1A1A1A; /* Dark Neutral for readability */
+  
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+  
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A1A;
+  
+  --primary: #4F8F5A; /* Functional Green */
+  --primary-foreground: #FFFFFF;
+  
+  --secondary: #2F6F8F; /* Clinical Blue */
+  --secondary-foreground: #FFFFFF;
+  
+  --muted: #F8F3E7;
+  --muted-foreground: #666666;
+  
+  --accent: #F4E6B3; /* Sunrise Yellow */
+  --accent-foreground: #4F8F5A;
+  
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  
+  --border: #D9D9D9; /* Soft Gray Divider */
+  --input: #D9D9D9;
+  --ring: #4F8F5A;
+  
+  --radius: 0.75rem;
+}
+
+.dark {
+  /* Dark mode maintains the brand identity but with deeper tones */
+  --background: #1A1C19;
+  --foreground: #F8F3E7;
+  
+  --card: #242723;
+  --card-foreground: #F8F3E7;
+  
+  --popover: #242723;
+  --popover-foreground: #F8F3E7;
+  
+  --primary: #6FAF6A;
+  --primary-foreground: #1A1C19;
+  
+  --secondary: #3F7F9F;
+  --secondary-foreground: #F8F3E7;
+  
+  --muted: #242723;
+  --muted-foreground: #A9CFA3;
+  
+  --accent: #F4E6B3;
+  --accent-foreground: #1A1C19;
+  
+  --border: #333333;
+  --input: #333333;
+  --ring: #6FAF6A;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-tight text-functional-green;
+  }
+}
+
+@layer utilities {
+  .bg-warm-sunrise {
+    background: linear-gradient(to bottom, #A9CFA3 0%, #F8F3E7 60%, #F8F3E7 100%);
+  }
+  .bg-pathway {
+    background-color: #FFF4D6;
+  }
+}
