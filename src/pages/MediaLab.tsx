@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Image as ImageIcon, Sparkles, Download, RefreshCw, Key, Upload, Wand2 } from "lucide-react";
+import { Loader2, Image as ImageIcon, Sparkles, Download, RefreshCw, Key, Upload, Wand2, Search } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { searchUnsplashImages, UnsplashImage } from "../lib/unsplash";
 
 declare global {
   interface Window {
@@ -26,6 +27,9 @@ export default function MediaLab() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("create");
+  const [unsplashQuery, setUnsplashQuery] = useState("");
+  const [unsplashResults, setUnsplashResults] = useState<UnsplashImage[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -146,6 +150,20 @@ export default function MediaLab() {
     }
   };
 
+  const handleUnsplashSearch = async () => {
+    if (!unsplashQuery.trim()) return;
+    setIsSearching(true);
+    try {
+      const results = await searchUnsplashImages(unsplashQuery);
+      setUnsplashResults(results);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to search Unsplash. Make sure your API key is configured.");
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background py-32">
       <div className="container mx-auto px-4">
@@ -154,7 +172,7 @@ export default function MediaLab() {
             <img 
               src="/logo.png" 
               alt="FunctionalHealth Logo" 
-              className="h-40 md:h-60 w-auto mx-auto drop-shadow-md"
+              className="h-24 md:h-32 w-auto mx-auto drop-shadow-md"
               referrerPolicy="no-referrer"
             />
             <Badge variant="outline" className="rounded-full px-6 py-2 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">
@@ -190,7 +208,7 @@ export default function MediaLab() {
           ) : (
             <div className="space-y-8">
               <Tabs defaultValue="create" className="w-full" onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-2 max-w-[400px] mx-auto mb-8 rounded-full h-12 p-1 bg-muted/50">
+                <TabsList className="grid w-full grid-cols-3 max-w-[600px] mx-auto mb-8 rounded-full h-12 p-1 bg-muted/50">
                   <TabsTrigger value="create" className="rounded-full flex items-center gap-2 data-[state=active]:bg-functional-green data-[state=active]:text-white">
                     <Sparkles size={16} />
                     Create
@@ -198,6 +216,10 @@ export default function MediaLab() {
                   <TabsTrigger value="edit" className="rounded-full flex items-center gap-2 data-[state=active]:bg-functional-green data-[state=active]:text-white">
                     <Wand2 size={16} />
                     Edit
+                  </TabsTrigger>
+                  <TabsTrigger value="search" className="rounded-full flex items-center gap-2 data-[state=active]:bg-functional-green data-[state=active]:text-white">
+                    <Search size={16} />
+                    Search
                   </TabsTrigger>
                 </TabsList>
 
@@ -322,6 +344,55 @@ export default function MediaLab() {
                         <p className="text-sm text-destructive font-medium bg-destructive/5 p-3 rounded-lg border border-destructive/20">
                           {error}
                         </p>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                <TabsContent value="search" className="space-y-8">
+                  <Card className="shadow-lg border-functional-green/10">
+                    <CardHeader>
+                      <CardTitle className="text-xl font-serif text-functional-green">Unsplash Image Search</CardTitle>
+                      <CardDescription>Search for high-quality, professional photography from Unsplash.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="flex flex-col md:flex-row gap-4">
+                        <Input 
+                          placeholder="e.g., medical research, clinical laboratory, healthy aging..." 
+                          value={unsplashQuery}
+                          onChange={(e) => setUnsplashQuery(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && handleUnsplashSearch()}
+                          className="flex-grow rounded-xl h-12 focus-visible:ring-functional-green"
+                          disabled={isSearching}
+                        />
+                        <Button 
+                          onClick={handleUnsplashSearch} 
+                          disabled={isSearching || !unsplashQuery.trim()}
+                          className="rounded-xl h-12 px-8 shrink-0 bg-functional-green hover:bg-functional-green/90"
+                        >
+                          {isSearching ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Search className="h-4 w-4" />
+                          )}
+                          <span className="ml-2">Search</span>
+                        </Button>
+                      </div>
+
+                      {unsplashResults.length > 0 && (
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                          {unsplashResults.map((img) => (
+                            <div 
+                              key={img.id} 
+                              className="aspect-video rounded-xl overflow-hidden cursor-pointer ring-offset-background transition-all hover:ring-2 hover:ring-functional-green group relative"
+                              onClick={() => setGeneratedImage(img.urls.regular)}
+                            >
+                              <img src={img.urls.small} alt={img.alt_description} className="w-full h-full object-cover" />
+                              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <Button size="sm" variant="secondary" className="rounded-full h-8 px-3 text-[10px]">Select</Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       )}
                     </CardContent>
                   </Card>

@@ -12,6 +12,7 @@ import About from "./pages/About";
 import Education from "./pages/Education";
 import ATPCycle from "./pages/ATPCycle";
 import MediaLab from "./pages/MediaLab";
+import Community from "./pages/Community";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/education" element={<Education />} />
           <Route path="/media-lab" element={<MediaLab />} />
+          <Route path="/community" element={<Community />} />
         </Routes>
       </Layout>
     </Router>

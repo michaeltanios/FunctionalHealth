@@ -32,11 +32,11 @@ export default function About() {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-5xl">
-            <div className="flex flex-col md:flex-row md:items-center gap-8 mb-12">
+            <div className="flex flex-col md:flex-row md:items-center gap-6 mb-10">
               <img 
                 src="/logo.png" 
                 alt="FunctionalHealth Logo" 
-                className="h-56 md:h-80 w-auto drop-shadow-md"
+                className="h-24 md:h-32 w-auto drop-shadow-md"
                 referrerPolicy="no-referrer"
               />
               <div className="space-y-3">

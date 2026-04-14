@@ -21,7 +21,7 @@ export default function Science() {
             <img 
               src="/logo.png" 
               alt="FunctionalHealth Logo" 
-              className="h-40 md:h-60 w-auto mx-auto drop-shadow-md"
+              className="h-24 md:h-32 w-auto mx-auto drop-shadow-md"
               referrerPolicy="no-referrer"
             />
             <Badge variant="outline" className="rounded-full px-6 py-2 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">

@@ -79,7 +79,7 @@ export default function Product() {
             <img 
               src="/logo.png" 
               alt="FunctionalHealth Logo" 
-              className="h-40 md:h-60 w-auto mx-auto lg:mx-0 drop-shadow-md"
+              className="h-24 md:h-32 w-auto mx-auto lg:mx-0 drop-shadow-md"
               referrerPolicy="no-referrer"
             />
           </div>

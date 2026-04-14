@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, Activity, ShieldCheck, Microscope, BookOpen, Info, Home } from "lucide-react";
+import { Menu, X, Activity, ShieldCheck, Microscope, BookOpen, Info, Home, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ export default function Layout({ children }: LayoutProps) {
     { name: "Home", href: "/", icon: Home },
     { name: "Science", href: "/science", icon: Microscope },
     { name: "Education", href: "/education", icon: BookOpen },
+    { name: "Community", href: "/community", icon: Users },
     { name: "About", href: "/about", icon: Info },
   ];
 
@@ -29,22 +30,22 @@ export default function Layout({ children }: LayoutProps) {
     <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       {/* Navigation */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 h-32 md:h-44 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-6 group">
+        <div className="container mx-auto px-4 h-24 md:h-28 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3 group shrink-0">
             <img 
               src="/logo.png" 
               alt="FunctionalHealth Logo" 
-              className="h-20 md:h-32 w-auto transition-transform group-hover:scale-105"
+              className="h-12 md:h-16 w-auto transition-transform group-hover:scale-105"
               referrerPolicy="no-referrer"
             />
-            <span className="text-3xl md:text-5xl font-serif font-bold tracking-tight">
+            <span className="text-xl md:text-2xl font-serif font-bold tracking-tight">
               <span className="text-functional-green">Functional</span>
               <span className="text-clinical-blue">Health</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-6 ml-auto mr-8">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -56,10 +57,16 @@ export default function Layout({ children }: LayoutProps) {
                 {link.name}
               </Link>
             ))}
-            <Button asChild size="sm" className="rounded-full px-6">
+          </nav>
+
+          <div className="hidden md:flex items-center gap-3">
+            <Button asChild variant="outline" size="sm" className="rounded-full px-5 border-functional-green text-functional-green hover:bg-functional-green/5">
+              <Link to="/community">Join Community</Link>
+            </Button>
+            <Button asChild size="sm" className="rounded-full px-5">
               <Link to="/product">Begin Your Recovery</Link>
             </Button>
-          </nav>
+          </div>
 
           {/* Mobile Menu Toggle */}
           <button
@@ -85,7 +92,7 @@ export default function Layout({ children }: LayoutProps) {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="md:hidden border-b bg-background absolute top-32 left-0 w-full p-4 space-y-4 shadow-xl z-50"
+                className="md:hidden border-b bg-background absolute top-24 left-0 w-full p-4 space-y-4 shadow-xl z-50"
               >
                 {navLinks.map((link) => (
                   <Link
@@ -123,14 +130,14 @@ export default function Layout({ children }: LayoutProps) {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="space-y-6">
-              <Link to="/" className="flex items-center gap-6">
+              <Link to="/" className="flex items-center gap-3">
                 <img 
                   src="/logo.png" 
                   alt="FunctionalHealth Logo" 
-                  className="h-24 w-auto"
+                  className="h-12 w-auto"
                   referrerPolicy="no-referrer"
                 />
-                <span className="text-3xl font-serif font-bold">
+                <span className="text-xl font-serif font-bold">
                   <span className="text-functional-green">Functional</span>
                   <span className="text-clinical-blue">Health</span>
                 </span>
@@ -145,6 +152,7 @@ export default function Layout({ children }: LayoutProps) {
                 <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
                 <li><Link to="/science" className="hover:text-primary transition-colors">The Science</Link></li>
                 <li><Link to="/education" className="hover:text-primary transition-colors">Education</Link></li>
+                <li><Link to="/community" className="hover:text-primary transition-colors">Recovery Community</Link></li>
                 <li><Link to="/media-lab" className="hover:text-primary transition-colors">Media Lab</Link></li>
               </ul>
             </div>
