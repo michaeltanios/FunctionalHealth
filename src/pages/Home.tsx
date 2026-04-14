@@ -48,8 +48,8 @@ export default function Home() {
     return (
       <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative py-12 md:py-20 lg:min-h-[80vh] flex items-center overflow-hidden bg-warm-sunrise">
-        <div className="container mx-auto px-4 relative z-10">
+      <section className="relative min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-7rem)] flex items-center overflow-hidden bg-warm-sunrise">
+        <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="max-w-3xl">
               <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
@@ -198,60 +198,6 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Community Section */}
-      <section className="py-24 bg-background overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="bg-functional-green rounded-[40px] p-12 md:p-20 relative overflow-hidden">
-            {/* Background Watermark */}
-            <div className="absolute -right-20 -bottom-20 opacity-10 pointer-events-none">
-              <img src="/logo.png" alt="" className="w-96 h-auto rotate-12" referrerPolicy="no-referrer" />
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-              <div className="space-y-8 text-white">
-                <Badge variant="outline" className="border-white/20 text-white bg-white/5">Recovery Community</Badge>
-                <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight">
-                  You don't have to <br />recover alone.
-                </h2>
-                <p className="text-white/80 text-lg leading-relaxed max-w-lg">
-                  Join our peer-led community for post-ICU survivors and caregivers. Share your story, find advice, and connect with others on the same journey.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Button asChild size="lg" className="rounded-full bg-white text-functional-green hover:bg-sunrise-yellow hover:text-functional-green px-8">
-                    <Link to="/community">Join the Community</Link>
-                  </Button>
-                  <Button asChild variant="outline" size="lg" className="rounded-full border-white/30 text-white hover:bg-white/10 px-8">
-                    <Link to="/community">Read Stories</Link>
-                  </Button>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div className="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
-                    <div className="text-2xl font-bold text-white mb-1">5k+</div>
-                    <div className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Members</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
-                    <div className="text-2xl font-bold text-white mb-1">12k+</div>
-                    <div className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Stories</div>
-                  </div>
-                </div>
-                <div className="pt-8 space-y-4">
-                  <div className="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
-                    <div className="text-2xl font-bold text-white mb-1">24/7</div>
-                    <div className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Support</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
-                    <div className="text-2xl font-bold text-white mb-1">100%</div>
-                    <div className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Peer-Led</div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
