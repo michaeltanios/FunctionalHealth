@@ -29,7 +29,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       {/* Navigation */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
+      <header className="sticky top-0 z-50 w-full border-b bg-[#FFFFFF] backdrop-blur-md">
         <div className="container mx-auto px-4 h-24 md:h-28 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group shrink-0">
             <img 
@@ -50,7 +50,7 @@ export default function Layout({ children }: LayoutProps) {
               <Link
                 key={link.name}
                 to={link.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
+                className={`text-sm font-bold transition-colors hover:text-primary ${
                   location.pathname === link.href ? "text-primary" : "text-muted-foreground"
                 }`}
               >
@@ -92,13 +92,13 @@ export default function Layout({ children }: LayoutProps) {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="md:hidden border-b bg-background absolute top-24 left-0 w-full p-4 space-y-4 shadow-xl z-50"
+                className="md:hidden border-b bg-[#FFFFFF] absolute top-24 left-0 w-full p-4 space-y-4 shadow-xl z-50"
               >
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
                     to={link.href}
-                    className="flex items-center gap-3 text-lg font-medium p-2 rounded-lg hover:bg-muted transition-colors"
+                    className="flex items-center gap-3 text-lg font-bold p-2 rounded-lg hover:bg-muted transition-colors"
                   >
                     <link.icon size={20} className="text-muted-foreground" />
                     {link.name}
