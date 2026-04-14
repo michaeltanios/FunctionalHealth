@@ -52,9 +52,17 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="max-w-3xl">
-              <Badge variant="secondary" className="mb-6 px-4 py-1 text-xs font-medium tracking-wider uppercase bg-white/50 text-clinical-blue border-none backdrop-blur-sm">
-                Physician-Led Research
-              </Badge>
+              <div className="flex flex-col md:flex-row md:items-center gap-8 mb-12">
+                <img 
+                  src="/logo.png" 
+                  alt="FunctionalHealth Logo" 
+                  className="h-48 md:h-72 w-auto drop-shadow-md"
+                  referrerPolicy="no-referrer"
+                />
+                <Badge variant="secondary" className="px-6 py-2 text-sm font-medium tracking-wider uppercase bg-white/50 text-clinical-blue border-none backdrop-blur-sm">
+                  Physician-Led Research
+                </Badge>
+              </div>
               <h1 className="text-5xl md:text-7xl font-serif font-bold leading-[1.1] mb-6 text-black">
                 Restoring Recovery, <br />
                 <span className="text-muted-foreground">Independence, and Longevity.</span>
@@ -149,7 +157,7 @@ export default function Home() {
       </section>
 
       {/* Problem Section */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
@@ -246,7 +254,7 @@ export default function Home() {
       </section>
 
       {/* Trust Section */}
-      <section className="py-20 bg-background border-y">
+      <section className="py-20 bg-clinical-blue/5 border-y">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="max-w-xl">

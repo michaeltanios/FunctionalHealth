@@ -29,12 +29,15 @@ export default function Layout({ children }: LayoutProps) {
     <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       {/* Navigation */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-functional-green flex items-center justify-center text-white transition-transform group-hover:scale-105">
-              <ShieldCheck size={20} />
-            </div>
-            <span className="text-xl font-serif font-bold tracking-tight">
+        <div className="container mx-auto px-4 h-32 md:h-44 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-6 group">
+            <img 
+              src="/logo.png" 
+              alt="FunctionalHealth Logo" 
+              className="h-20 md:h-32 w-auto transition-transform group-hover:scale-105"
+              referrerPolicy="no-referrer"
+            />
+            <span className="text-3xl md:text-5xl font-serif font-bold tracking-tight">
               <span className="text-functional-green">Functional</span>
               <span className="text-clinical-blue">Health</span>
             </span>
@@ -82,7 +85,7 @@ export default function Layout({ children }: LayoutProps) {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="md:hidden border-b bg-background absolute top-16 left-0 w-full p-4 space-y-4 shadow-xl z-50"
+                className="md:hidden border-b bg-background absolute top-32 left-0 w-full p-4 space-y-4 shadow-xl z-50"
               >
                 {navLinks.map((link) => (
                   <Link
@@ -119,10 +122,15 @@ export default function Layout({ children }: LayoutProps) {
       <footer className="bg-background border-t py-12 md:py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div className="space-y-4">
-              <Link to="/" className="flex items-center gap-2">
-                <ShieldCheck className="text-functional-green" />
-                <span className="text-xl font-serif font-bold">
+            <div className="space-y-6">
+              <Link to="/" className="flex items-center gap-6">
+                <img 
+                  src="/logo.png" 
+                  alt="FunctionalHealth Logo" 
+                  className="h-24 w-auto"
+                  referrerPolicy="no-referrer"
+                />
+                <span className="text-3xl font-serif font-bold">
                   <span className="text-functional-green">Functional</span>
                   <span className="text-clinical-blue">Health</span>
                 </span>

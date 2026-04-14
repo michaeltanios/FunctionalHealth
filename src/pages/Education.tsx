@@ -13,7 +13,7 @@ export default function Education() {
     window.scrollTo(0, 0);
   }, []);
 
-  const categories = ["All", "Recovery", "Aging", "Nutrition", "Science", "Caregiving", "Research"];
+  const categories = ["All", "Creatine", "Recovery", "Healthy Aging & Longevity", "Nutrition", "Research", "Caregiving"];
 
   const articles = [
     {
@@ -23,10 +23,18 @@ export default function Education() {
       excerpt: "Extended hospital stays can cause significant muscle loss and functional decline. Learn what happens to the body during hospitalization and evidence-based strategies for recovery."
     },
     {
-      title: "Aging and Muscle Loss: Understanding Sarcopenia",
-      category: "Aging",
-      readTime: "8 min read",
-      excerpt: "Sarcopenia affects nearly everyone over 40. Discover the science behind age-related muscle loss, its consequences, and what can be done to slow or reverse it."
+      title: "Preserve your muscle mass",
+      category: "Healthy Aging & Longevity",
+      readTime: "6 min read",
+      excerpt: "Declining muscle mass is part of aging, but that does not mean you are helpless to stop it.",
+      link: "https://www.health.harvard.edu/healthy-aging-and-longevity/preserve-your-muscle-mass"
+    },
+    {
+      title: "How Nutrition Can Support Your Surgery",
+      category: "Nutrition",
+      readTime: "5 min read",
+      excerpt: "Healthy eating habits before and after surgery can lead to a swift recovery and improve overall outcomes. The American College of Surgeons",
+      link: "https://www.facs.org/for-patients/preparing-for-surgery/how-nutrition-can-support-your-surgery/"
     },
     {
       title: "Why Traditional Nutrition Isn't Enough for Recovery",
@@ -35,14 +43,28 @@ export default function Education() {
       excerpt: "Standard dietary guidelines weren't designed for recovery and rehabilitation. Explore why targeted nutritional supplementation may be necessary during critical recovery periods."
     },
     {
+      title: "Creatine and brain health",
+      category: "Creatine",
+      readTime: "10 min read",
+      excerpt: "Update on the effects of creatine supplementation on brain health in humans.",
+      link: "https://www.mdpi.com/2072-6643/13/2/586"
+    },
+    {
+      title: "Metabolism basics of creatine",
+      category: "Creatine",
+      readTime: "12 min read",
+      excerpt: "A bioinformatics-based review exploring the fundamental metabolic pathways and physiological roles of creatine in the human body.",
+      link: "https://www.mdpi.com/2072-6643/13/4/1238"
+    },
+    {
       title: "Creatine Beyond the Gym: Clinical Applications",
-      category: "Research",
+      category: "Creatine",
       readTime: "7 min read",
       excerpt: "Creatine is one of the most studied nutrients in clinical science — with applications far beyond athletic performance. Review the evidence for its use in aging and recovery populations."
     },
     {
       title: "Maintaining Functional Independence as You Age",
-      category: "Science",
+      category: "Research",
       readTime: "6 min read",
       excerpt: "Independence isn't just about strength — it's about the cellular energy to perform daily tasks. Learn how muscle health and ATP production connect to long-term autonomy."
     },
@@ -61,12 +83,18 @@ export default function Education() {
   return (
     <div className="flex flex-col">
       {/* Education Header */}
-      <section className="py-24 bg-warm-sunrise">
+      <section className="py-32 bg-warm-sunrise">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto space-y-4">
-            <Badge variant="outline" className="rounded-full px-4 py-1 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">
+          <div className="text-center max-w-3xl mx-auto space-y-10">
+            <img 
+              src="/logo.png" 
+              alt="FunctionalHealth Logo" 
+              className="h-40 md:h-60 w-auto mx-auto drop-shadow-md"
+              referrerPolicy="no-referrer"
+            />
+            <Badge variant="outline" className="rounded-full px-6 py-2 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">
               <BookOpen size={14} />
-              <span className="text-[10px] font-bold uppercase tracking-widest">Education & Insights</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest">Healthy Aging & Longevity</span>
             </Badge>
             <h1 className="text-4xl md:text-6xl font-serif font-bold text-functional-green leading-tight">
               Understanding recovery through <br />science
@@ -151,9 +179,17 @@ export default function Education() {
                     </p>
                   </div>
                   <div className="pt-4">
-                    <Button variant="link" className="p-0 h-auto text-clinical-blue font-bold flex items-center gap-1 group">
-                      Read article <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                    </Button>
+                    {article.link ? (
+                      <Button asChild variant="link" className="p-0 h-auto text-clinical-blue font-bold flex items-center gap-1 group">
+                        <a href={article.link} target="_blank" rel="noopener noreferrer">
+                          Read article <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                        </a>
+                      </Button>
+                    ) : (
+                      <Button variant="link" className="p-0 h-auto text-clinical-blue font-bold flex items-center gap-1 group">
+                        Read article <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>

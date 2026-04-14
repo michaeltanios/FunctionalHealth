@@ -15,10 +15,16 @@ export default function Science() {
   return (
     <div className="flex flex-col">
       {/* Research & Evidence Header */}
-      <section className="pt-24 pb-16 bg-warm-sunrise border-b">
+      <section className="pt-32 pb-24 bg-warm-sunrise border-b">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto space-y-4">
-            <Badge variant="outline" className="rounded-full px-4 py-1 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">
+          <div className="text-center max-w-3xl mx-auto space-y-10">
+            <img 
+              src="/logo.png" 
+              alt="FunctionalHealth Logo" 
+              className="h-40 md:h-60 w-auto mx-auto drop-shadow-md"
+              referrerPolicy="no-referrer"
+            />
+            <Badge variant="outline" className="rounded-full px-6 py-2 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">
               <Microscope size={14} />
               <span className="text-[10px] font-bold uppercase tracking-widest">Research & Evidence</span>
             </Badge>
@@ -201,12 +207,12 @@ export default function Science() {
               <div className="space-y-4">
                 <div className="p-6 rounded-2xl border bg-secondary/50 shadow-sm space-y-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-primary uppercase tracking-widest">Current Trial</p>
+                    <p className="text-xs font-bold text-functional-green uppercase tracking-widest">Current Trial</p>
                     <a 
                       href="https://clinicaltrials.gov/" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1 hover:text-primary transition-colors"
+                      className="text-[10px] font-bold text-clinical-blue uppercase tracking-widest flex items-center gap-1 hover:text-functional-green transition-colors"
                     >
                       ClinicalTrials.gov <ChevronRight size={10} />
                     </a>
@@ -248,10 +254,10 @@ export default function Science() {
                 </div>
               </div>
               
-              <Card className="bg-secondary border-none shadow-none">
+              <Card className="bg-secondary/50 border border-border shadow-none">
                 <CardContent className="p-8">
-                  <h3 className="text-xl font-serif font-bold mb-4">Access Our Research Library</h3>
-                  <p className="text-muted-foreground text-sm mb-6">
+                  <h3 className="text-xl font-serif font-bold mb-4 text-functional-green">Access Our Research Library</h3>
+                  <p className="text-foreground/80 text-sm mb-6">
                     Are you a healthcare professional? Access our full library of white papers and clinical summaries.
                   </p>
                   <Button variant="outline" className="rounded-full">
@@ -264,11 +270,11 @@ export default function Science() {
         </div>
       </section>
       {/* Scientific References Section */}
-      <section className="py-20 bg-secondary/50 border-t">
+      <section className="py-20 bg-secondary/30 border-t">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">Scientific References</h2>
-            <div className="grid grid-cols-1 gap-4 text-[11px] text-muted-foreground leading-relaxed">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-clinical-blue mb-8">Scientific References</h2>
+            <div className="grid grid-cols-1 gap-4 text-[11px] text-foreground/70 leading-relaxed">
               <p>
                 1. Larsson L, et al. (2019). Sarcopenia: Aging-Related Loss of Muscle Mass and Function. <span className="italic">Physiol Rev</span>, 99(1): 427–511.
               </p>

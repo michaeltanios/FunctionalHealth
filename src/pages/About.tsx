@@ -11,11 +11,40 @@ export default function About() {
   return (
     <div className="flex flex-col">
       {/* About Hero */}
-      <section className="py-20 md:py-32 bg-warm-sunrise border-b">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <Badge className="mb-4 bg-functional-green text-white border-none">Our Mission</Badge>
-            <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 text-functional-green leading-tight">
+      <section className="relative py-32 md:py-56 bg-warm-sunrise border-b overflow-hidden">
+        {/* Large Background Watermark Logo with Gradient Effect */}
+        <div className="absolute -right-32 -top-32 opacity-[0.05] pointer-events-none select-none">
+          <img 
+            src="/logo.png" 
+            alt="" 
+            className="w-[1200px] h-auto rotate-12 blur-[3px]"
+            referrerPolicy="no-referrer"
+          />
+        </div>
+        <div className="absolute -left-32 -bottom-32 opacity-[0.03] pointer-events-none select-none">
+          <img 
+            src="/logo.png" 
+            alt="" 
+            className="w-[1000px] h-auto -rotate-12 blur-[2px]"
+            referrerPolicy="no-referrer"
+          />
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-5xl">
+            <div className="flex flex-col md:flex-row md:items-center gap-8 mb-12">
+              <img 
+                src="/logo.png" 
+                alt="FunctionalHealth Logo" 
+                className="h-56 md:h-80 w-auto drop-shadow-md"
+                referrerPolicy="no-referrer"
+              />
+              <div className="space-y-3">
+                <Badge className="bg-functional-green text-white border-none px-6 py-2 text-sm">Our Mission</Badge>
+                <div className="text-sm text-clinical-blue font-bold tracking-[0.3em] uppercase">Est. 2024 • Physician Led</div>
+              </div>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-8 text-functional-green leading-[1.1]">
               Bridging the Gap Between <br />
               <span className="text-clinical-blue/60 italic">Research and Recovery.</span>
             </h1>

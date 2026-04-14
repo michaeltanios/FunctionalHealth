@@ -194,11 +194,11 @@ export default function ATPCycle() {
       </section>
 
       {/* Scientific References Section */}
-      <section className="py-20 bg-secondary/50 border-t">
+      <section className="py-20 bg-secondary/30 border-t">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-8">Scientific References</h2>
-            <div className="grid grid-cols-1 gap-4 text-[11px] text-muted-foreground leading-relaxed">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-clinical-blue mb-8">Scientific References</h2>
+            <div className="grid grid-cols-1 gap-4 text-[11px] text-foreground/70 leading-relaxed">
               <p>
                 1. Wallimann T, et al. (1992). Intracellular compartmentation, structure and function of creatine kinase isoenzymes in tissues with high and fluctuating energy demands: the 'phosphocreatine circuit' for cellular energy homeostasis. <span className="italic">Biochem J</span>, 281(Pt 1): 21–40.
               </p>

@@ -73,8 +73,16 @@ export default function Product() {
   return (
     <div className="flex flex-col">
       {/* Product Hero */}
-      <section className="py-12 md:py-24 bg-background">
+      <section className="py-24 md:py-32 bg-background">
         <div className="container mx-auto px-4">
+          <div className="mb-16 text-center lg:text-left">
+            <img 
+              src="/logo.png" 
+              alt="FunctionalHealth Logo" 
+              className="h-40 md:h-60 w-auto mx-auto lg:mx-0 drop-shadow-md"
+              referrerPolicy="no-referrer"
+            />
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative group">
               <div className="aspect-square bg-functional-green/5 rounded-[40px] flex items-center justify-center overflow-hidden border border-border relative">
@@ -330,7 +338,7 @@ export default function Product() {
       </section>
 
       {/* Usage Guide Section */}
-      <section className="py-24 bg-background">
+      <section className="py-24 bg-warm-sunrise/30">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
             <Badge variant="outline" className="rounded-full px-4 py-1 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">
@@ -485,7 +493,7 @@ export default function Product() {
       </section>
 
       {/* Who It's For Section */}
-      <section className="py-24 bg-background">
+      <section className="py-24 bg-secondary/20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div className="space-y-8">

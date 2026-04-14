@@ -147,11 +147,17 @@ export default function MediaLab() {
   };
 
   return (
-    <div className="min-h-screen bg-background py-20">
+    <div className="min-h-screen bg-background py-32">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto space-y-12">
-          <div className="text-center space-y-4">
-            <Badge variant="outline" className="rounded-full px-4 py-1 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">
+        <div className="max-w-4xl mx-auto space-y-16">
+          <div className="text-center space-y-10">
+            <img 
+              src="/logo.png" 
+              alt="FunctionalHealth Logo" 
+              className="h-40 md:h-60 w-auto mx-auto drop-shadow-md"
+              referrerPolicy="no-referrer"
+            />
+            <Badge variant="outline" className="rounded-full px-6 py-2 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">
               <Sparkles size={14} />
               <span className="text-[10px] font-bold uppercase tracking-widest">AI Design Studio</span>
             </Badge>
