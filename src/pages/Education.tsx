@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, BookOpen, Microscope, ChevronRight, Sparkles, Loader2, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
+import logo from "@/src/assets/logo.png";
 import ReactMarkdown from 'react-markdown';
 import { ai, SYSTEM_INSTRUCTION } from "@/lib/gemini";
 
@@ -26,7 +27,7 @@ export default function Education() {
 
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview",
         config: {
           systemInstruction: SYSTEM_INSTRUCTION + "\n\nYou are an expert at summarizing clinical research for patients. Provide a concise, 3-bullet point summary of the clinical significance of the following article. " + 
             (article.link ? "Use the provided URL to read the full content and summarize it accurately." : "Use Google Search to find information about this topic if the excerpt is insufficient.") + 
@@ -121,7 +122,7 @@ export default function Education() {
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
             <img 
-              src="/logo.png" 
+              src={logo} 
               alt="FunctionalHealth Logo" 
               className="h-16 md:h-24 w-auto mx-auto drop-shadow-md"
             />

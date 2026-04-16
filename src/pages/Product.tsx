@@ -40,7 +40,13 @@ import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
 import DosageCalculator from "../components/DosageCalculator";
-const AUTOPLAY_INTERVAL = 5000; // 5 seconds
+import logo from "@/src/assets/logo.png";
+import product1 from "@/src/assets/product-1.png";
+import product2 from "@/src/assets/product-2.png";
+import product3 from "@/src/assets/product-3.png";
+import product4 from "@/src/assets/product-4.png";
+import product5 from "@/src/assets/product-5.png";
+import product6 from "@/src/assets/product-6.png";
 
 export default function Product() {
   const [email, setEmail] = useState("");
@@ -65,7 +71,7 @@ export default function Product() {
 
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview",
         config: {
           systemInstruction: SYSTEM_INSTRUCTION + "\n\nYou are an expert on the ingredients in FunctionalHealth products. Answer the user's question specifically about Micronized Creatine Monohydrate, HMB, or Vitamin D3. Keep it clinical, evidence-based, and concise. Use Google Search to find specific clinical data if needed.",
           tools: [{ googleSearch: {} }],
@@ -85,32 +91,32 @@ export default function Product() {
   const productImages = [
     {
       id: 1,
-      url: '/product-1.png',
+      url: product1,
       alt: 'Built with clinical intent - Research focused on functional recovery'
     },
     {
       id: 2,
-      url: '/product-2.png',
+      url: product2,
       alt: 'Designed for real-world recovery - Supporting rehabilitation and strength'
     },
     {
       id: 3,
-      url: '/product-3.png',
+      url: product3,
       alt: 'FunctionalHealth Micronized Creatine Monohydrate - Physician-backed purity'
     },
     {
       id: 4,
-      url: '/product-4.png',
+      url: product4,
       alt: 'Supports energy where recovery happens - ATP regeneration diagram'
     },
     {
       id: 5,
-      url: '/product-5.png',
+      url: product5,
       alt: 'Recovery doesn\'t stop at discharge - Supporting independence after hospital'
     },
     {
       id: 6,
-      url: '/product-6.png',
+      url: product6,
       alt: 'FunctionalHealth product pouch and convenient single-serve stick pack'
     }
   ];
@@ -152,7 +158,7 @@ export default function Product() {
           >
             <div className="container mx-auto flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
+                <img src={logo} alt="Logo" className="h-8 w-auto" />
                 <span className="font-serif font-bold text-functional-green">Micronized Creatine</span>
               </div>
               <div className="flex items-center gap-6">

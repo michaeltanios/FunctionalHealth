@@ -29,7 +29,7 @@ export default function ScienceExplainer({ topic, context }: ScienceExplainerPro
       `;
 
       const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview",
         config: {
           systemInstruction: SYSTEM_INSTRUCTION + "\n\nYou are an expert at simplifying clinical research for patients. Use Google Search to find the latest studies and evidence-based data regarding the topic provided. Always cite your sources.",
           tools: [{ googleSearch: {} }],
