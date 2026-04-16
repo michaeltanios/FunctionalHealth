@@ -6,6 +6,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import AnnouncementBar from "./AnnouncementBar";
 import RecoveryAssistant from "./RecoveryAssistant";
+import logo from "../assets/logo.png";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -35,7 +36,7 @@ export default function Layout({ children }: LayoutProps) {
         <div className="container mx-auto px-4 h-24 md:h-28 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 group shrink-0">
             <img 
-              src="/logo.png" 
+              src={logo} 
               alt="FunctionalHealth Logo" 
               className="h-10 md:h-14 w-auto transition-transform group-hover:scale-105"
             />
@@ -135,7 +136,7 @@ export default function Layout({ children }: LayoutProps) {
             <div className="space-y-6">
               <Link to="/" className="flex items-center gap-3">
                 <img 
-                  src="/logo.png" 
+                  src={logo} 
                   alt="FunctionalHealth Logo" 
                   className="h-12 w-auto brightness-0 invert"
                 />

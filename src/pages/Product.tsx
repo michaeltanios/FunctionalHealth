@@ -40,6 +40,13 @@ import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
 import DosageCalculator from "../components/DosageCalculator";
+import logo from "../assets/logo.png";
+import product1 from "../assets/product-1.png";
+import product2 from "../assets/product-2.png";
+import product3 from "../assets/product-3.png";
+import product4 from "../assets/product-4.png";
+import product5 from "../assets/product-5.png";
+import product6 from "../assets/product-6.png";
 
 export default function Product() {
   const [email, setEmail] = useState("");
@@ -84,32 +91,32 @@ export default function Product() {
   const productImages = [
     {
       id: 1,
-      url: '/product-1.png',
+      url: product1,
       alt: 'Built with clinical intent - Research focused on functional recovery'
     },
     {
       id: 2,
-      url: '/product-2.png',
+      url: product2,
       alt: 'Designed for real-world recovery - Supporting rehabilitation and strength'
     },
     {
       id: 3,
-      url: '/product-3.png',
+      url: product3,
       alt: 'FunctionalHealth Micronized Creatine Monohydrate - Physician-backed purity'
     },
     {
       id: 4,
-      url: '/product-4.png',
+      url: product4,
       alt: 'Supports energy where recovery happens - ATP regeneration diagram'
     },
     {
       id: 5,
-      url: '/product-5.png',
+      url: product5,
       alt: 'Recovery doesn\'t stop at discharge - Supporting independence after hospital'
     },
     {
       id: 6,
-      url: '/product-6.png',
+      url: product6,
       alt: 'FunctionalHealth product pouch and convenient single-serve stick pack'
     }
   ];
@@ -151,7 +158,7 @@ export default function Product() {
           >
             <div className="container mx-auto flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <img src="/logo.png" alt="Logo" className="h-8 w-auto" />
+                <img src={logo} alt="Logo" className="h-8 w-auto" />
                 <span className="font-serif font-bold text-functional-green">Micronized Creatine</span>
               </div>
               <div className="flex items-center gap-6">
