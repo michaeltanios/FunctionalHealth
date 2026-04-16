@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShieldCheck, ArrowRight, ArrowLeft, Sparkles, Loader2, CheckCircle2, Microscope, Activity, Users, HeartPulse } from 'lucide-react';
+import { ShieldCheck, ArrowRight, ArrowLeft, Sparkles, Loader2, CheckCircle2, Microscope, Activity, Users, HeartPulse, Clock } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@/components/ui/button';
 import { ai, SYSTEM_INSTRUCTION } from '@/lib/gemini';
@@ -25,6 +25,16 @@ const steps: QuizStep[] = [
   },
   {
     id: 2,
+    question: "What is your age bracket?",
+    options: [
+      { label: "Under 50", value: "under-50", icon: <div className="text-sm font-bold opacity-50">{"<"}50</div> },
+      { label: "50 - 65", value: "50-65", icon: <div className="text-sm font-bold opacity-50">50+</div> },
+      { label: "65 - 80", value: "65-80", icon: <div className="text-sm font-bold opacity-50">65+</div> },
+      { label: "80+", value: "80-plus", icon: <div className="text-sm font-bold opacity-50">80+</div> }
+    ]
+  },
+  {
+    id: 3,
     question: "What is your current activity level?",
     options: [
       { label: "Limited / Bedrest", value: "limited", icon: <div className="w-2 h-2 rounded-full bg-red-500" /> },
@@ -34,13 +44,33 @@ const steps: QuizStep[] = [
     ]
   },
   {
-    id: 3,
+    id: 4,
     question: "Are you recovering from a specific event?",
     options: [
       { label: "Post-Surgery", value: "surgery", icon: <ShieldCheck size={24} /> },
       { label: "Recent Illness", value: "illness", icon: <Activity size={24} /> },
       { label: "Aging / General Health", value: "aging", icon: <HeartPulse size={24} /> },
       { label: "Other / Maintenance", value: "other", icon: <Microscope size={24} /> }
+    ]
+  },
+  {
+    id: 5,
+    question: "How long has it been since this event?",
+    options: [
+      { label: "Days / Very Recent", value: "days", icon: <Clock className="w-6 h-6" /> },
+      { label: "Weeks", value: "weeks", icon: <Clock className="w-6 h-6 opacity-80" /> },
+      { label: "Months", value: "months", icon: <Clock className="w-6 h-6 opacity-60" /> },
+      { label: "Chronic / Not Applicable", value: "not-applicable", icon: <Clock className="w-6 h-6 opacity-40" /> }
+    ]
+  },
+  {
+    id: 6,
+    question: "What best describes your typical diet?",
+    options: [
+      { label: "Omnivore / Balanced", value: "omnivore", icon: <Activity size={24} className="opacity-80" /> },
+      { label: "Vegetarian", value: "vegetarian", icon: <Activity size={24} className="text-green-500" /> },
+      { label: "Vegan", value: "vegan", icon: <Activity size={24} className="text-emerald-600" /> },
+      { label: "Restricted / Specialized", value: "restricted", icon: <ShieldCheck size={24} className="opacity-60" /> }
     ]
   }
 ];
@@ -70,13 +100,17 @@ export default function Quiz() {
       const prompt = `
         Based on these user answers for a recovery quiz:
         1. Goal: ${answers[1]}
-        2. Activity Level: ${answers[2]}
-        3. Event: ${answers[3]}
+        2. Age: ${answers[2]}
+        3. Activity Level: ${answers[3]}
+        4. Event: ${answers[4]}
+        5. Time since event: ${answers[5]}
+        6. Diet: ${answers[6]}
 
-        Generate a highly individualized recovery summary (about 200 words).
-        - Use Google Search to find specific clinical evidence or research that connects their goal (${answers[1]}) and event (${answers[3]}) to creatine monohydrate or HMB supplementation.
-        - Explain the physiological mechanism (e.g., ATP regeneration, protein synthesis) in simple but clinical terms.
-        - Provide 3 specific, actionable "Recovery Milestones" tailored to their activity level (${answers[2]}).
+        Generate a highly individualized recovery summary (about 250 words).
+        - Use Google Search to find specific clinical evidence or research that connects their goal (${answers[1]}), age bracket (${answers[2]}), and diet (${answers[6]}) to creatine monohydrate supplementation in a clinical recovery context.
+        - **MANDATORY: Include at least 2-3 direct citations from reputable scientific journals (e.g., PubMed, NIH) to support your claims.**
+        - Explain the physiological mechanism (e.g., ATP regeneration, protein synthesis) in simple but clinical terms, specifically how it relates to their current time since event (${answers[5]}).
+        - Provide 4 specific, actionable "Recovery Milestones" tailored to their activity level (${answers[3]}) and goal (${answers[1]}).
         - Maintain a physician-led, evidence-based tone.
         - IMPORTANT: Avoid making definitive medical diagnoses or promises of cure. Use phrases like "Research suggests," "May support," or "Clinical studies have shown."
         - ALWAYS include the medical disclaimer: "This information is for educational purposes based on clinical research and does not constitute medical advice. Please consult your physician before starting any new supplement protocol."
@@ -156,7 +190,7 @@ export default function Quiz() {
         <div className="mb-12 text-center">
           <Badge className="mb-4 bg-functional-green text-white border-none px-4 py-1 font-bold">Recovery Quiz</Badge>
           <h1 className="text-4xl font-serif font-bold text-functional-green mb-4">Discover Your Path to Independence</h1>
-          <p className="text-muted-foreground">Answer 3 simple questions to receive a personalized clinical recovery summary.</p>
+          <p className="text-muted-foreground">Answer 6 simple questions to receive a personalized clinical recovery summary.</p>
         </div>
 
         <div className="bg-white rounded-[32px] shadow-xl border border-border p-8 md:p-12 relative overflow-hidden">

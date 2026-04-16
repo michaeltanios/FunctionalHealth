@@ -38,7 +38,7 @@ export default function RecoveryAssistant() {
       const chat = ai.chats.create({
         model: "gemini-3-flash-preview",
         config: {
-          systemInstruction: SYSTEM_INSTRUCTION,
+          systemInstruction: SYSTEM_INSTRUCTION + "\n\n**CRITICAL: Your responses must be extremely concise (max 2 short paragraphs or 3-5 bullet points). Avoid fluff. Get straight to the scientific evidence.**",
           tools: [{ googleSearch: {} }],
         },
         history: messages.map(m => ({

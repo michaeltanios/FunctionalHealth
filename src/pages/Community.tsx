@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Users, MessageSquare, Heart, Share2, Shield, MessageCircle, ArrowRight, Quote } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useEffect, useState } from "react";
-import logo from "@/src/assets/logo.png";
 import { Input } from "@/components/ui/input";
 
 export default function Community() {
@@ -80,7 +79,7 @@ export default function Community() {
         {/* Large Background Watermark Logo */}
         <div className="absolute -right-32 -top-32 opacity-[0.05] pointer-events-none select-none">
           <img 
-            src={logo} 
+            src="/logo.png" 
             alt="" 
             className="w-[1200px] h-auto rotate-12 blur-[3px]"
           />
@@ -89,7 +88,7 @@ export default function Community() {
         <div className="container mx-auto px-4 relative z-10 text-center">
           <div className="max-w-4xl mx-auto space-y-10">
             <img 
-              src={logo} 
+              src="/logo.png" 
               alt="FunctionalHealth Logo" 
               className="h-24 md:h-32 w-auto mx-auto drop-shadow-md"
             />

@@ -10,8 +10,6 @@ import { ai, SYSTEM_INSTRUCTION } from "@/lib/gemini";
 
 import React, { useState, useEffect } from "react";
 import CertificationMarquee from "../components/CertificationMarquee";
-import logo from "@/src/assets/logo.png";
-import productPouch from "@/src/assets/product-pouch.png";
 
 export default function Home() {
     const [email, setEmail] = useState("");
@@ -62,7 +60,7 @@ export default function Home() {
         const response = await ai.models.generateContent({
           model: "gemini-3-flash-preview",
           config: {
-            systemInstruction: SYSTEM_INSTRUCTION + "\n\nYou are an expert on functional recovery. Answer the user's general question about recovery, nutrition, or muscle health. Keep it clinical, empathetic, and concise. Always include the medical disclaimer. Use Google Search to find specific clinical data if needed.",
+            systemInstruction: SYSTEM_INSTRUCTION + "\n\nYou are an expert on functional recovery. Answer the user's general question about recovery, nutrition, or muscle health. Keep it clinical, empathetic, and concise. **MANDATORY: Include at least one direct citation from a peer-reviewed source (e.g., PubMed, NIH) if providing scientific claims.** Always include the medical disclaimer. Use Google Search to find specific clinical data if needed.",
             tools: [{ googleSearch: {} }],
           },
           contents: query,
@@ -131,7 +129,7 @@ export default function Home() {
                 >
                   <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
                     <img 
-                      src={logo} 
+                      src="/logo.png" 
                       alt="FunctionalHealth Logo" 
                       className="h-24 md:h-32 w-auto drop-shadow-md"
                     />
@@ -345,7 +343,7 @@ export default function Home() {
               <div className="relative">
                 <div className="aspect-square rounded-[60px] bg-warm-sunrise/30 flex items-center justify-center p-12">
                   <img 
-                    src={productPouch} 
+                    src="/product-pouch.png" 
                     alt="FunctionalHealth Micronized Creatine Monohydrate" 
                     className="w-full h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500"
                   />
@@ -457,7 +455,7 @@ export default function Home() {
               
               {/* Background Watermark */}
               <div className="absolute -right-16 -bottom-16 opacity-[0.05] pointer-events-none select-none">
-                <img src={logo} alt="" className="w-[400px] h-auto rotate-12" />
+                <img src="/logo.png" alt="" className="w-[400px] h-auto rotate-12" />
               </div>
               
               <div className="relative z-10 max-w-5xl mx-auto text-center space-y-12">
