@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, BookOpen, Microscope, ChevronRight, Sparkles, Loader2, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
+import logo from "@/src/assets/logo.png";
 import ReactMarkdown from 'react-markdown';
 import { ai, SYSTEM_INSTRUCTION } from "@/lib/gemini";
 
@@ -121,7 +122,7 @@ export default function Education() {
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
             <img 
-              src="/logo.png" 
+              src={logo} 
               alt="FunctionalHealth Logo" 
               className="h-16 md:h-24 w-auto mx-auto drop-shadow-md"
             />
@@ -185,7 +186,6 @@ export default function Education() {
                   src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800" 
                   alt="Medical professional consulting" 
                   className="w-full h-full object-cover opacity-60 grayscale"
-                  referrerPolicy="no-referrer"
                 />
               </div>
             </div>

@@ -10,6 +10,8 @@ import { ai, SYSTEM_INSTRUCTION } from "@/lib/gemini";
 
 import React, { useState, useEffect } from "react";
 import CertificationMarquee from "../components/CertificationMarquee";
+import logo from "@/src/assets/logo.png";
+import productPouch from "@/src/assets/product-pouch.png";
 
 export default function Home() {
     const [email, setEmail] = useState("");
@@ -129,7 +131,7 @@ export default function Home() {
                 >
                   <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
                     <img 
-                      src="/logo.png" 
+                      src={logo} 
                       alt="FunctionalHealth Logo" 
                       className="h-24 md:h-32 w-auto drop-shadow-md"
                     />
@@ -203,7 +205,6 @@ export default function Home() {
                       src={heroSlides[currentSlide].image} 
                       alt="Recovery focus" 
                       className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
                     />
                   </div>
                   <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-3xl shadow-xl border border-border/50 max-w-[240px]">
@@ -260,7 +261,6 @@ export default function Home() {
                     src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&q=80&w=800" 
                     alt="Modern clinical recovery environment" 
                     className="w-full h-full object-cover mix-blend-multiply opacity-90"
-                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <div className="absolute -bottom-4 -left-4 md:left-4 lg:-left-4 bg-white/95 backdrop-blur-sm p-5 rounded-2xl shadow-xl border border-border/50 max-w-[220px]">
@@ -345,7 +345,7 @@ export default function Home() {
               <div className="relative">
                 <div className="aspect-square rounded-[60px] bg-warm-sunrise/30 flex items-center justify-center p-12">
                   <img 
-                    src="/product-pouch.png" 
+                    src={productPouch} 
                     alt="FunctionalHealth Micronized Creatine Monohydrate" 
                     className="w-full h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500"
                   />
@@ -457,7 +457,7 @@ export default function Home() {
               
               {/* Background Watermark */}
               <div className="absolute -right-16 -bottom-16 opacity-[0.05] pointer-events-none select-none">
-                <img src="/logo.png" alt="" className="w-[400px] h-auto rotate-12" />
+                <img src={logo} alt="" className="w-[400px] h-auto rotate-12" />
               </div>
               
               <div className="relative z-10 max-w-5xl mx-auto text-center space-y-12">

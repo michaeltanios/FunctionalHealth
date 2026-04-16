@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Microscope, ShieldCheck, HeartPulse, Users, Instagram, Twitter, Linkedin, Activity, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "@/src/assets/logo.png";
 
 import { useEffect } from "react";
 
@@ -20,7 +21,7 @@ export default function About() {
           <div className="max-w-4xl">
             <div className="flex flex-col md:flex-row md:items-center gap-6 mb-10">
               <img 
-                src="/logo.png" 
+                src={logo} 
                 alt="FunctionalHealth Logo" 
                 className="h-24 md:h-32 w-auto drop-shadow-md"
               />
@@ -76,7 +77,6 @@ export default function About() {
                   src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&q=80&w=800" 
                   alt="Compassionate care in a clinical setting" 
                   className="w-full h-full object-cover sepia-[0.1] hover:sepia-0 transition-all duration-700"
-                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="aspect-[4/5] rounded-3xl bg-warm-sunrise/20 overflow-hidden shadow-lg border border-border/50">
@@ -84,7 +84,6 @@ export default function About() {
                   src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=800" 
                   alt="Clinical consultation and physician-patient partnership" 
                   className="w-full h-full object-cover sepia-[0.1] hover:sepia-0 transition-all duration-700"
-                  referrerPolicy="no-referrer"
                 />
               </div>
             </div>
@@ -218,7 +217,6 @@ export default function About() {
                         src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400" 
                         alt="Dr. Maged Tanios" 
                         className="w-full h-full object-cover" 
-                        referrerPolicy="no-referrer" 
                       />
                     </div>
                   </div>
