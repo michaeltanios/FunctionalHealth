@@ -16,24 +16,6 @@ export default function About() {
     <div className="flex flex-col text-base md:text-lg">
       {/* About Hero */}
       <section className="relative py-32 md:py-48 bg-warm-sunrise border-b overflow-hidden">
-        {/* Large Background Watermark Logo with Reduced Opacity */}
-        <div className="absolute -right-32 -top-32 opacity-[0.02] pointer-events-none select-none">
-          <img 
-            src="/logo.png" 
-            alt="" 
-            className="w-[1200px] h-auto rotate-12 blur-[3px]"
-            referrerPolicy="no-referrer"
-          />
-        </div>
-        <div className="absolute -left-32 -bottom-32 opacity-[0.01] pointer-events-none select-none">
-          <img 
-            src="/logo.png" 
-            alt="" 
-            className="w-[1000px] h-auto -rotate-12 blur-[2px]"
-            referrerPolicy="no-referrer"
-          />
-        </div>
-        
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl">
             <div className="flex flex-col md:flex-row md:items-center gap-6 mb-10">
@@ -92,17 +74,17 @@ export default function About() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="aspect-[4/5] rounded-3xl bg-warm-sunrise/20 overflow-hidden shadow-lg border border-border/50">
                 <img 
-                  src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800" 
+                  src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&q=80&w=800" 
                   alt="Compassionate care in a clinical setting" 
-                  className="w-full h-full object-cover sepia-[0.2] hover:sepia-0 transition-all duration-700"
+                  className="w-full h-full object-cover sepia-[0.1] hover:sepia-0 transition-all duration-700"
                   referrerPolicy="no-referrer"
                 />
               </div>
               <div className="aspect-[4/5] rounded-3xl bg-warm-sunrise/20 overflow-hidden shadow-lg border border-border/50">
                 <img 
-                  src="https://images.unsplash.com/photo-1581056399312-60301e72c09b?auto=format&fit=crop&q=80&w=800" 
+                  src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=800" 
                   alt="Clinical consultation and physician-patient partnership" 
-                  className="w-full h-full object-cover sepia-[0.2] hover:sepia-0 transition-all duration-700"
+                  className="w-full h-full object-cover sepia-[0.1] hover:sepia-0 transition-all duration-700"
                   referrerPolicy="no-referrer"
                 />
               </div>
@@ -273,13 +255,15 @@ export default function About() {
                 </div>
                 <div className="flex gap-4">
                   {[
-                    { icon: <Instagram size={24} />, label: "Instagram", href: "#" },
-                    { icon: <Twitter size={24} />, label: "Twitter", href: "#" },
-                    { icon: <Linkedin size={24} />, label: "LinkedIn", href: "#" }
+                    { icon: <Instagram size={24} />, label: "Instagram", href: "https://instagram.com/functionalhealth" },
+                    { icon: <Twitter size={24} />, label: "Twitter", href: "https://twitter.com/functionalhealth" },
+                    { icon: <Linkedin size={24} />, label: "LinkedIn", href: "https://linkedin.com/company/functionalhealth" }
                   ].map((social, idx) => (
                     <a 
                       key={idx} 
                       href={social.href} 
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center shadow-md border border-border hover:border-sunrise-yellow hover:text-sunrise-yellow transition-all duration-300 group"
                       aria-label={social.label}
                     >

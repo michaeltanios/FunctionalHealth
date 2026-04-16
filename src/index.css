@@ -147,4 +147,15 @@
   .bg-pathway {
     background-color: #F8F3E7;
   }
+
+  .markdown-body h1 { @apply text-3xl font-serif font-bold mb-6 text-functional-green; }
+  .markdown-body h2 { @apply text-2xl font-serif font-bold mb-4 text-functional-green; }
+  .markdown-body h3 { @apply text-xl font-serif font-bold mb-3 text-functional-green; }
+  .markdown-body p { @apply mb-4 leading-relaxed text-foreground/80; }
+  .markdown-body ul { @apply list-disc pl-6 mb-4 space-y-2; }
+  .markdown-body ol { @apply list-decimal pl-6 mb-4 space-y-2; }
+  .markdown-body li { @apply text-foreground/80; }
+  .markdown-body strong { @apply font-bold text-functional-green; }
+  .markdown-body em { @apply italic; }
+  .markdown-body blockquote { @apply border-l-4 border-clinical-blue/30 pl-4 py-1 italic mb-4 bg-clinical-blue/5 rounded-r-lg; }
 }

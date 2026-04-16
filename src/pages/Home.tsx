@@ -3,18 +3,84 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, ShieldCheck, Activity, Microscope, HeartPulse, CheckCircle2 } from "lucide-react";
-import { motion } from "motion/react";
+import { ArrowRight, ShieldCheck, Activity, Microscope, HeartPulse, CheckCircle2, Zap, Sparkles, Users, Loader2, Send, MessageCircle, X } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import ReactMarkdown from 'react-markdown';
+import { ai, SYSTEM_INSTRUCTION } from "@/lib/gemini";
 
 import React, { useState, useEffect } from "react";
+import CertificationMarquee from "../components/CertificationMarquee";
 
 export default function Home() {
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [message, setMessage] = useState("");
 
+    const heroSlides = [
+      {
+        title: "Physician-Formulated, Evidence-Led Recovery.",
+        subtitle: "The only recovery protocol designed to bridge the gap between hospital and home. Micronized Creatine Monohydrate for functional independence.",
+        cta: "Shop the Protocol",
+        link: "/product",
+        image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=1200",
+        badge: "Clinical Standard"
+      },
+      {
+        title: "Recover Together, ICU Survivor Community.",
+        subtitle: "Join our peer-led collective specifically designed for ICU survivors and their families. Find support, share stories, and regain your confidence.",
+        cta: "Join the Collective",
+        link: "/community",
+        image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=1200",
+        badge: "Peer-Led Support"
+      },
+      {
+        title: "Clinical Research, Translated for You.",
+        subtitle: "Led by Dr. Maged Tanios, MD, MPH, MBA. We strip away the hype and focus on peer-reviewed data to deliver real-world functional outcomes.",
+        cta: "Meet the Team",
+        link: "/about",
+        image: "https://images.unsplash.com/photo-1559839734-2b71f153678f?auto=format&fit=crop&q=80&w=1200",
+        badge: "Physician-Led"
+      }
+    ];
+
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [faqQuestion, setFaqQuestion] = useState("");
+    const [faqAnswer, setFaqAnswer] = useState("");
+    const [isFaqLoading, setIsFaqLoading] = useState(false);
+
+    const handleFaqAsk = async (question?: string) => {
+      const query = question || faqQuestion;
+      if (!query.trim() || isFaqLoading) return;
+
+      setIsFaqLoading(true);
+      setFaqAnswer("");
+      if (!question) setFaqQuestion("");
+
+      try {
+        const response = await ai.models.generateContent({
+          model: "gemini-3-flash-preview",
+          config: {
+            systemInstruction: SYSTEM_INSTRUCTION + "\n\nYou are an expert on functional recovery. Answer the user's general question about recovery, nutrition, or muscle health. Keep it clinical, empathetic, and concise. Always include the medical disclaimer. Use Google Search to find specific clinical data if needed.",
+            tools: [{ googleSearch: {} }],
+          },
+          contents: query,
+        });
+
+        setFaqAnswer(response.text || "I couldn't find a specific answer to that. Please try asking about muscle loss during aging or recovery after surgery.");
+      } catch (error) {
+        console.error("Smart FAQ error:", error);
+        setFaqAnswer("Sorry, I'm having trouble connecting to my research database. Please try again in a moment.");
+      } finally {
+        setIsFaqLoading(false);
+      }
+    };
+
     useEffect(() => {
       window.scrollTo(0, 0);
+      const timer = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+      }, 6000);
+      return () => clearInterval(timer);
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -49,93 +115,114 @@ export default function Home() {
     return (
       <div className="flex flex-col">
         {/* Hero Section */}
-        <motion.section 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="relative py-12 md:py-20 lg:min-h-[85vh] flex items-center overflow-hidden bg-warm-sunrise"
-        >
+        <section className="relative py-12 md:py-20 lg:min-h-[90vh] flex items-center overflow-hidden bg-warm-sunrise">
           <div className="container mx-auto px-4 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="max-w-3xl"
-              >
-                <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
-                  <img 
-                    src="/logo.png" 
-                    alt="FunctionalHealth Logo" 
-                    className="h-24 md:h-32 w-auto drop-shadow-md"
-                    referrerPolicy="no-referrer"
-                  />
-                  <Badge variant="secondary" className="px-4 py-1 text-xs font-bold tracking-wider uppercase bg-white/80 text-clinical-blue border-none backdrop-blur-sm shadow-sm">
-                    Physician-Led Research
-                  </Badge>
-                </div>
-                <h1 className="text-5xl md:text-7xl font-serif font-bold leading-[1.05] mb-6 text-functional-green tracking-tight">
-                  Restoring Recovery, <br />
-                  <span className="text-clinical-blue">Independence,</span> <br />
-                  <span className="text-muted-foreground/60">and Longevity.</span>
-                </h1>
-                <p className="text-xl text-foreground/90 mb-10 leading-relaxed max-w-2xl font-medium">
-                  We translate clinical research into real-world health solutions. 
-                  Evidence-based supplementation designed for functional recovery and long-term vitality.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <Button asChild size="lg" className="rounded-full px-10 text-lg bg-functional-green hover:bg-functional-green/90 shadow-xl shadow-functional-green/20 font-bold h-16">
-                    <Link to="/product">Begin Your Recovery</Link>
-                  </Button>
-                  <Button asChild variant="outline" size="lg" className="rounded-full px-10 text-lg border-clinical-blue text-clinical-blue hover:bg-clinical-blue hover:text-white transition-all h-16 font-bold">
-                    <Link to="/science" className="flex items-center gap-2">
-                      Learn the Science <ArrowRight size={20} />
-                    </Link>
-                  </Button>
-                </div>
-                <div className="flex items-center gap-4 text-sm font-bold text-clinical-blue/80">
-                  <div className="flex -space-x-2">
-                    {[1,2,3,4].map(i => (
-                      <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-muted overflow-hidden">
-                        <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" />
-                      </div>
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={currentSlide}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="max-w-3xl"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
+                    <img 
+                      src="/logo.png" 
+                      alt="FunctionalHealth Logo" 
+                      className="h-24 md:h-32 w-auto drop-shadow-md"
+                      referrerPolicy="no-referrer"
+                    />
+                    <Badge variant="secondary" className="px-4 py-1 text-xs font-bold tracking-wider uppercase bg-white/80 text-clinical-blue border-none backdrop-blur-sm shadow-sm">
+                      {heroSlides[currentSlide].badge}
+                    </Badge>
+                  </div>
+                  <h1 className="text-5xl md:text-8xl font-serif font-bold leading-[1.05] mb-6 text-functional-green tracking-tight">
+                    {heroSlides[currentSlide].title.split(',').map((part, i) => (
+                      <React.Fragment key={`hero-title-part-${i}`}>
+                        {i === 1 ? <span className="text-clinical-blue">{part}</span> : part}
+                        {i < heroSlides[currentSlide].title.split(',').length - 1 && <br />}
+                      </React.Fragment>
                     ))}
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-1 text-sunrise-yellow">
-                      {"★★★★★".split("").map((s, i) => <span key={i}>{s}</span>)}
-                    </div>
-                    <span>Trusted by 5,000+ patients</span>
-                  </div>
-                </div>
-              </motion.div>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="relative hidden lg:block"
-              >
-                <div className="w-full aspect-[4/5] rounded-[40px] overflow-hidden shadow-2xl ring-1 ring-white/20">
-                  <img 
-                    src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=1200" 
-                    alt="Active senior exercising and feeling energized" 
-                    className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-3xl shadow-xl border border-border/50 max-w-[240px]">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-2 h-2 rounded-full bg-functional-green animate-pulse" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-clinical-blue">Clinical Standard</span>
-                  </div>
-                  <p className="text-sm font-bold text-foreground leading-tight">
-                    Formulated based on peer-reviewed clinical trials for functional outcomes.
+                  </h1>
+                  <p className="text-xl md:text-2xl text-foreground/90 mb-10 leading-relaxed max-w-2xl font-medium">
+                    {heroSlides[currentSlide].subtitle}
                   </p>
-                </div>
-              </motion.div>
+                  <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                    <Button asChild size="lg" className="rounded-full px-10 text-lg bg-functional-green hover:bg-functional-green/90 shadow-xl shadow-functional-green/20 font-bold h-16">
+                      <Link to={heroSlides[currentSlide].link}>{heroSlides[currentSlide].cta}</Link>
+                    </Button>
+                    <Button asChild variant="outline" size="lg" className="rounded-full px-10 text-lg border-clinical-blue text-clinical-blue hover:bg-clinical-blue hover:text-white transition-all h-16 font-bold">
+                      <Link to="/quiz" className="flex items-center gap-2">
+                        Take Recovery Quiz <Sparkles size={20} className="text-sunrise-yellow" />
+                      </Link>
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-4 text-sm font-bold text-clinical-blue/80">
+                      <div className="flex -space-x-2">
+                        {[1,2,3,4].map(i => (
+                          <div key={`user-avatar-${i}`} className="w-8 h-8 rounded-full border-2 border-white bg-muted overflow-hidden">
+                            <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="User" />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1 text-sunrise-yellow">
+                          {"★★★★★".split("").map((s, i) => <span key={`star-${i}`}>{s}</span>)}
+                        </div>
+                        <span>Trusted by 5,000+ patients</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      {heroSlides.map((_, i) => (
+                        <button 
+                          key={`hero-dot-${i}`}
+                          onClick={() => setCurrentSlide(i)}
+                          className={`h-1.5 rounded-full transition-all ${currentSlide === i ? "w-8 bg-functional-green" : "w-2 bg-functional-green/20"}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={currentSlide}
+                  initial={{ opacity: 0, scale: 0.95, x: 20 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, x: -20 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="relative hidden lg:block lg:-mt-48"
+                >
+                  <div className="w-full aspect-[4/5] rounded-[60px] overflow-hidden shadow-2xl ring-1 ring-white/20">
+                    <img 
+                      src={heroSlides[currentSlide].image} 
+                      alt="Recovery focus" 
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-3xl shadow-xl border border-border/50 max-w-[240px]">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-2 h-2 rounded-full bg-functional-green animate-pulse" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-clinical-blue">Clinical Standard</span>
+                    </div>
+                    <p className="text-sm font-bold text-foreground leading-tight">
+                      Optimized for post-operative and age-related recovery.
+                    </p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
-        </motion.section>
+        </section>
+        
+        <CertificationMarquee />
 
         {/* Problem Section */}
         <motion.section 
@@ -152,7 +239,7 @@ export default function Home() {
                   The Challenge of Recovery
                 </h2>
                 <p className="text-lg text-foreground/80 leading-relaxed font-medium">
-                  During illness, hospitalization, or simply as we age, the body undergoes a rapid decline in muscle mass and cellular energy. This \"recovery gap\" often leads to a loss of independence and a slower return to daily activities.
+                  During illness, hospitalization, or simply as we age, the body undergoes a rapid decline in muscle mass and cellular energy. This "recovery gap" often leads to a loss of independence and a slower return to daily activities.
                 </p>
                 <div className="space-y-4 pt-4">
                   {[
@@ -179,7 +266,7 @@ export default function Home() {
                 </div>
                 <div className="absolute -bottom-4 -left-4 md:left-4 lg:-left-4 bg-white/95 backdrop-blur-sm p-5 rounded-2xl shadow-xl border border-border/50 max-w-[220px]">
                   <p className="text-[11px] font-medium italic text-clinical-blue leading-relaxed">
-                    \"Our goal is to bridge the gap between clinical research and patient recovery.\"
+                    "Our goal is to bridge the gap between clinical research and patient recovery."
                   </p>
                   <div className="mt-3 pt-3 border-t border-border/50">
                     <p className="text-[9px] font-bold text-functional-green tracking-widest uppercase">Dr. Maged Tanios, MD, MPH, MBA</p>
@@ -288,7 +375,7 @@ export default function Home() {
                     { title: "Physician Led", desc: "Formulated for clinical outcomes." },
                     { title: "Third Party Tested", desc: "Verified for purity and potency." }
                   ].map((benefit, i) => (
-                    <div key={i} className="flex gap-3">
+                    <div key={`benefit-${i}`} className="flex gap-3">
                       <CheckCircle2 className="text-functional-green shrink-0 mt-1" size={20} />
                       <div>
                         <h4 className="font-bold text-black">{benefit.title}</h4>
@@ -344,10 +431,10 @@ export default function Home() {
                   img: "https://i.pravatar.cc/100?img=32"
                 }
               ].map((t, i) => (
-                <Card key={i} className="border-none shadow-lg bg-white p-8 rounded-[32px]">
+                <Card key={`testimonial-${i}`} className="border-none shadow-lg bg-white p-8 rounded-[32px]">
                   <div className="flex flex-col h-full">
                     <div className="text-sunrise-yellow mb-6 text-xl">★★★★★</div>
-                    <p className="text-foreground/80 font-medium leading-relaxed mb-8 flex-grow italic">\"{t.quote}\"</p>
+                    <p className="text-foreground/80 font-medium leading-relaxed mb-8 flex-grow italic">"{t.quote}"</p>
                     <div className="flex items-center gap-4">
                       <img src={t.img} alt={t.author} className="w-12 h-12 rounded-full border-2 border-functional-green/20" />
                       <div>
@@ -363,64 +450,61 @@ export default function Home() {
         </motion.section>
 
         {/* Community Section */}
-        <motion.section 
-          initial={{ opacity: 0, scale: 0.98 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="py-24 bg-background overflow-hidden"
-        >
+        <section className="py-24 bg-background overflow-hidden">
           <div className="container mx-auto px-4">
-            <div className="bg-functional-green rounded-[40px] p-12 md:p-20 relative overflow-hidden shadow-2xl shadow-functional-green/20">
+            <div className="bg-functional-green rounded-[48px] p-12 md:p-20 relative overflow-hidden shadow-2xl shadow-functional-green/20">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-96 h-96 bg-sunrise-yellow/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2" />
+              
               {/* Background Watermark */}
-              <div className="absolute -right-20 -bottom-20 opacity-10 pointer-events-none">
-                <img src="/logo.png" alt="" className="w-96 h-auto rotate-12" referrerPolicy="no-referrer" />
+              <div className="absolute -right-16 -bottom-16 opacity-[0.05] pointer-events-none select-none">
+                <img src="/logo.png" alt="" className="w-[400px] h-auto rotate-12" referrerPolicy="no-referrer" />
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-                <div className="space-y-8 text-white">
-                  <Badge variant="outline" className="border-white/20 text-white bg-white/5 font-bold">Recovery Community</Badge>
-                  <h2 className="text-5xl md:text-7xl font-serif font-bold leading-[1.05] tracking-tight">
-                    You don't have to <br />recover alone.
+              <div className="relative z-10 max-w-5xl mx-auto text-center space-y-12">
+                <div className="space-y-6">
+                  <Badge variant="outline" className="border-white/20 text-white bg-white/5 px-4 py-1.5 font-bold uppercase tracking-widest text-[10px]">
+                    Recovery Community
+                  </Badge>
+                  <h2 className="text-4xl md:text-7xl font-serif font-bold text-white leading-[1.1] tracking-tight">
+                    A Community Built for <br />
+                    <span className="text-sunrise-yellow italic">Your Recovery.</span>
                   </h2>
-                  <p className="text-white/90 text-xl leading-relaxed max-w-lg font-medium">
-                    Join our peer-led community for post-ICU survivors and caregivers. Share your story, find advice, and connect with others on the same journey.
+                  <p className="text-white/90 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto font-medium">
+                    Join our peer-led collective for post-ICU survivors and caregivers. Share your story, find advice, and reclaim your independence together.
                   </p>
-                  <div className="flex flex-wrap gap-4">
-                    <Button asChild size="lg" className="rounded-full bg-white text-functional-green hover:bg-sunrise-yellow hover:text-functional-green px-10 font-bold h-16 text-lg">
-                      <Link to="/community">Join the Community</Link>
-                    </Button>
-                    <Button asChild variant="outline" size="lg" className="rounded-full border-white/30 text-white hover:bg-white/10 px-10 font-bold h-16 text-lg">
-                      <Link to="/community">Read Stories</Link>
-                    </Button>
-                  </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-4">
-                    <div className="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
-                      <div className="text-2xl font-bold text-white mb-1">5k+</div>
-                      <div className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Members</div>
+
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                  {[
+                    { label: "Active Members", value: "5k+" },
+                    { label: "Support Hours", value: "24/7" },
+                    { label: "Stories Shared", value: "12k+" },
+                    { label: "Peer-Led", value: "100%" }
+                  ].map((stat, i) => (
+                    <div 
+                      key={`community-stat-${i}`}
+                      className="p-8 rounded-[32px] bg-white/5 backdrop-blur-xl border border-white/10 flex flex-col items-center justify-center space-y-2 hover:bg-white/10 transition-all duration-300"
+                    >
+                      <div className="text-4xl font-serif font-bold text-white tracking-tight">{stat.value}</div>
+                      <div className="text-[10px] uppercase tracking-[0.2em] text-white/60 font-bold">{stat.label}</div>
                     </div>
-                    <div className="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
-                      <div className="text-2xl font-bold text-white mb-1">12k+</div>
-                      <div className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Stories</div>
-                    </div>
-                  </div>
-                  <div className="pt-8 space-y-4">
-                    <div className="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
-                      <div className="text-2xl font-bold text-white mb-1">24/7</div>
-                      <div className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Support</div>
-                    </div>
-                    <div className="bg-white/10 backdrop-blur-md p-6 rounded-3xl border border-white/10">
-                      <div className="text-2xl font-bold text-white mb-1">100%</div>
-                      <div className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Peer-Led</div>
-                    </div>
-                  </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                  <Button asChild size="lg" className="rounded-full bg-white text-functional-green hover:bg-sunrise-yellow hover:text-functional-green px-12 font-bold h-16 text-lg shadow-xl shadow-black/10 transition-all hover:scale-105 active:scale-95">
+                    <Link to="/community">Join the Community</Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg" className="rounded-full border-2 border-white/40 text-sunrise-yellow hover:bg-white hover:text-functional-green px-12 font-bold h-16 text-lg transition-all">
+                    <Link to="/community">Read Stories</Link>
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Waitlist Section */}
         <motion.section 
@@ -478,6 +562,107 @@ export default function Home() {
             </div>
           </div>
         </motion.section>
+
+        {/* Smart AI FAQ Section */}
+        <section className="py-24 bg-white relative overflow-hidden">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto space-y-12">
+              <div className="text-center space-y-4">
+                <Badge variant="outline" className="border-clinical-blue/20 text-clinical-blue bg-clinical-blue/5 px-4 py-1.5 font-bold uppercase tracking-widest text-[10px]">
+                  Smart Recovery Assistant
+                </Badge>
+                <h2 className="text-4xl md:text-5xl font-serif font-bold text-functional-green tracking-tight">
+                  Have a specific question <br />
+                  <span className="text-clinical-blue italic">about recovery?</span>
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                  Ask our AI Assistant anything about functional health, muscle preservation, or clinical nutrition.
+                </p>
+              </div>
+
+              <div className="bg-secondary/10 rounded-[40px] p-8 md:p-12 border border-border/50 shadow-xl">
+                <div className="space-y-8">
+                  <div className="relative">
+                    <Input 
+                      placeholder="e.g., How does creatine help with sarcopenia?"
+                      value={faqQuestion}
+                      onChange={(e) => setFaqQuestion(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleFaqAsk()}
+                      className="rounded-2xl h-16 pr-16 border-border bg-white focus-visible:ring-functional-green text-lg px-6 shadow-sm"
+                    />
+                    <Button 
+                      onClick={() => handleFaqAsk()}
+                      disabled={isFaqLoading || !faqQuestion.trim()}
+                      className="absolute right-2 top-2 w-12 h-12 rounded-xl bg-functional-green hover:bg-functional-green/90 p-0"
+                    >
+                      {isFaqLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
+                    </Button>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {[
+                      "What is sarcopenia?",
+                      "Recovery after surgery tips",
+                      "Benefits of micronized creatine",
+                      "Nutrition for aging adults"
+                    ].map((q, i) => (
+                      <button 
+                        key={`faq-suggested-${i}`}
+                        onClick={() => handleFaqAsk(q)}
+                        className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full bg-white border border-border hover:border-functional-green hover:text-functional-green transition-all shadow-sm"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {faqAnswer ? (
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        className="p-8 rounded-[32px] bg-white border border-functional-green/10 shadow-lg space-y-6 relative"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-functional-green">
+                            <Sparkles size={18} />
+                            <span className="text-[10px] font-bold uppercase tracking-widest">AI Analysis</span>
+                          </div>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => setFaqAnswer("")}
+                            className="rounded-full h-8 w-8 p-0"
+                          >
+                            <X size={14} />
+                          </Button>
+                        </div>
+                        <div className="text-foreground leading-relaxed whitespace-pre-wrap font-medium markdown-body">
+                          <ReactMarkdown>{faqAnswer}</ReactMarkdown>
+                        </div>
+                        <div className="pt-4 border-t flex items-center gap-3 text-[10px] text-muted-foreground font-bold uppercase tracking-widest italic">
+                          <ShieldCheck size={14} className="text-functional-green" />
+                          Consult your physician for personalized medical advice.
+                        </div>
+                      </motion.div>
+                    ) : isFaqLoading ? (
+                      <div className="flex flex-col items-center justify-center space-y-4 py-12">
+                        <Loader2 className="w-10 h-10 text-functional-green animate-spin" />
+                        <p className="text-sm text-muted-foreground animate-pulse font-bold uppercase tracking-widest">Analyzing clinical research...</p>
+                      </div>
+                    ) : (
+                      <div className="py-12 flex flex-col items-center justify-center text-center space-y-4 opacity-30">
+                        <MessageCircle size={64} className="text-muted-foreground" />
+                        <p className="text-sm font-bold uppercase tracking-widest">Ask a question to begin</p>
+                      </div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Trust Section */}
         <motion.section 

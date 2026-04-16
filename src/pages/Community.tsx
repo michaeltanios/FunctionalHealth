@@ -7,9 +7,15 @@ import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 
 export default function Community() {
+  const joinRef = React.useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const scrollToJoin = () => {
+    joinRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -100,10 +106,19 @@ export default function Community() {
               A dedicated space for post-ICU survivors and caregivers to share stories, exchange advice, and support each other through the path to functional health.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Button size="lg" className="rounded-full px-8 bg-functional-green hover:bg-functional-green/90 h-14 text-lg">
-                Join the Forum
+              <Button 
+                onClick={scrollToJoin} 
+                size="lg" 
+                className="rounded-full px-10 bg-functional-green hover:bg-functional-green/90 h-16 text-xl shadow-2xl shadow-functional-green/30 hover:scale-105 transition-all duration-300 font-bold"
+              >
+                Join the Recovery Community
               </Button>
-              <Button variant="outline" size="lg" className="rounded-full px-8 border-border bg-background hover:bg-secondary/50 h-14 text-lg">
+              <Button 
+                onClick={scrollToJoin} 
+                variant="outline" 
+                size="lg" 
+                className="rounded-full px-10 border-border bg-background hover:bg-secondary/50 h-16 text-xl font-bold"
+              >
                 Share Your Story
               </Button>
             </div>
@@ -147,14 +162,14 @@ export default function Community() {
               <h2 className="text-4xl font-serif font-bold text-functional-green">Active Conversations</h2>
               <p className="text-muted-foreground">Join the conversation and learn from others who have walked the same path.</p>
             </div>
-            <Button variant="link" className="text-clinical-blue font-bold flex items-center gap-2 p-0 h-auto">
+            <Button onClick={scrollToJoin} variant="link" className="text-clinical-blue font-bold flex items-center gap-2 p-0 h-auto">
               View all discussions <ArrowRight size={16} />
             </Button>
           </div>
 
           <div className="grid grid-cols-1 gap-6">
             {discussions.map((discussion, idx) => (
-              <Card key={idx} className="group hover:shadow-md transition-all duration-300 border-border/50 overflow-hidden">
+              <Card key={`discussion-${idx}`} className="group hover:shadow-md transition-all duration-300 border-border/50 overflow-hidden">
                 <CardContent className="p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                   <div className="space-y-3">
                     <div className="flex flex-wrap gap-2">
@@ -206,7 +221,7 @@ export default function Community() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {stories.map((story, idx) => (
-              <Card key={idx} className="bg-white border-none shadow-sm relative p-8 md:p-10 rounded-[32px]">
+              <Card key={`story-${idx}`} className="bg-white border-none shadow-sm relative p-8 md:p-10 rounded-[32px]">
                 <Quote className="absolute top-6 right-8 text-functional-green/10" size={60} />
                 <CardContent className="p-0 space-y-6 relative z-10">
                   <p className="text-lg text-muted-foreground italic leading-relaxed">
@@ -229,7 +244,7 @@ export default function Community() {
       </section>
 
       {/* Join Section */}
-      <section className="py-24 bg-background">
+      <section ref={joinRef} className="py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto bg-functional-green rounded-[40px] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
             <div className="lg:w-1/2 p-12 md:p-16 space-y-8 text-white">
@@ -244,7 +259,7 @@ export default function Community() {
                   "Direct access to clinical recovery guides",
                   "A safe space for survivors and caregivers"
                 ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-3">
+                  <div key={`benefit-${idx}`} className="flex items-center gap-3">
                     <Shield size={20} className="text-sunrise-yellow" />
                     <span className="text-sm font-medium">{item}</span>
                   </div>

@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/tabs";
 
 import { useEffect, useState, useRef } from "react";
+import ScienceExplainer from "../components/ScienceExplainer";
 
 export default function Science() {
   const [activeTab, setActiveTab] = useState("muscle-loss");
@@ -62,12 +63,12 @@ export default function Science() {
       <section className="relative pt-32 pb-24 md:pt-48 md:pb-32 bg-warm-sunrise border-b overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto space-y-8">
-            <div className="space-y-6">
-              <Badge className="bg-functional-green text-white border-none px-6 py-2 text-sm font-bold mx-auto w-fit flex items-center gap-2 shadow-lg shadow-functional-green/10">
-                <Microscope size={16} />
-                <span className="tracking-widest uppercase">Research & Evidence</span>
+            <div className="space-y-4">
+              <Badge className="bg-functional-green text-white border-none px-8 py-3 text-sm font-bold mx-auto w-fit flex items-center gap-3 shadow-xl shadow-functional-green/20 scale-110">
+                <Microscope size={20} />
+                <span className="tracking-[0.2em] uppercase">Research & Evidence</span>
               </Badge>
-              <h1 className="text-5xl md:text-7xl font-serif font-bold text-functional-green leading-[1.1]">
+              <h1 className="text-5xl md:text-8xl font-serif font-bold text-functional-green leading-[1.05] tracking-tight">
                 The science behind <br />
                 <span className="text-clinical-blue/70 italic">functional recovery</span>
               </h1>
@@ -75,13 +76,21 @@ export default function Science() {
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
               Understanding how the body loses — and can regain — strength, energy, and independence through evidence-based nutrition.
             </p>
-            <div className="pt-4">
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button 
                 onClick={() => scrollToTabs("muscle-loss")}
                 size="lg" 
-                className="rounded-full h-16 px-10 bg-functional-green hover:bg-functional-green/90 shadow-xl shadow-functional-green/20 font-bold text-lg cursor-pointer"
+                className="rounded-full h-16 px-12 bg-functional-green hover:bg-functional-green/90 shadow-xl shadow-functional-green/20 font-bold text-xl cursor-pointer group"
               >
-                See the Evidence <ArrowRight className="ml-2" size={20} />
+                See the Evidence <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={24} />
+              </Button>
+              <Button 
+                asChild
+                variant="outline"
+                size="lg" 
+                className="rounded-full h-16 px-12 border-clinical-blue text-clinical-blue hover:bg-clinical-blue hover:text-white font-bold text-xl"
+              >
+                <Link to="/education">Explore the Research</Link>
               </Button>
             </div>
           </div>
@@ -98,18 +107,19 @@ export default function Science() {
                 <p className="text-muted-foreground">Explore the clinical foundations of functional recovery across multiple domains.</p>
               </div>
               
-              <TabsList className="flex flex-row flex-wrap justify-center gap-4 bg-transparent h-auto p-0 w-full">
+              <TabsList className="flex flex-row flex-wrap justify-center gap-4 bg-transparent h-auto p-2 w-full mb-8">
                 {[
-                  { value: "muscle-loss", label: "Muscle Health" },
-                  { value: "atp-cycle", label: "Energy Metabolism" },
-                  { value: "mechanism", label: "Mechanism of Action" },
-                  { value: "outcomes", label: "Clinical Outcomes" }
+                  { value: "muscle-loss", label: "Muscle Health", icon: Activity },
+                  { value: "atp-cycle", label: "ATP Cycle & Energy", icon: Zap },
+                  { value: "mechanism", label: "Mechanism of Action", icon: Dna },
+                  { value: "outcomes", label: "Clinical Outcomes", icon: Stethoscope }
                 ].map((tab) => (
                   <TabsTrigger 
                     key={tab.value}
                     value={tab.value} 
-                    className="rounded-xl px-8 py-4 bg-white border border-border/60 shadow-sm hover:bg-muted hover:border-border transition-all duration-200 data-[state=active]:bg-functional-green data-[state=active]:text-white data-[state=active]:border-functional-green data-[state=active]:shadow-md font-bold text-sm md:text-base cursor-pointer w-auto flex-none min-w-[180px]"
+                    className="rounded-2xl px-8 py-5 bg-white border-2 border-border/40 shadow-lg hover:border-functional-green/30 hover:bg-functional-green/5 transition-all duration-300 data-[state=active]:bg-functional-green data-[state=active]:text-white data-[state=active]:border-functional-green data-[state=active]:shadow-xl data-[state=active]:shadow-functional-green/20 font-bold text-base md:text-lg cursor-pointer w-full sm:w-auto min-w-[220px] flex items-center justify-center gap-3 group"
                   >
+                    <tab.icon size={20} className="group-data-[state=active]:text-white text-functional-green" />
                     {tab.label}
                   </TabsTrigger>
                 ))}
@@ -154,36 +164,49 @@ export default function Science() {
                           </Button>
                         </div>
                       </div>
+                      
+                      <ScienceExplainer 
+                        topic="Sarcopenia & Bed Rest" 
+                        context="The rapid loss of muscle mass during hospitalization and how it impacts long-term functional independence." 
+                      />
                     </div>
 
-                    <div className="space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {[
-                        { label: "Age 30–40", value: "3–5% loss per decade", width: "30%", color: "bg-functional-green/40", ref: "1" },
-                        { label: "Age 50–60", value: "5–8% loss per decade", width: "55%", color: "bg-functional-green/70", ref: "1" },
-                        { label: "Post-hospitalization", value: "Up to 5% in 10 days", width: "80%", color: "bg-sunrise-yellow", ref: "2", highlight: true },
-                        { label: "Age 70+", value: "10–15% loss per decade", width: "95%", color: "bg-clinical-blue", ref: "1" }
+                        { label: "Age 30–40", value: "3–5% loss", width: "30%", color: "bg-functional-green/40", ref: "1", icon: Activity, desc: "Initial decline begins" },
+                        { label: "Age 50–60", value: "5–8% loss", width: "55%", color: "bg-functional-green/70", ref: "1", icon: TrendingDown, desc: "Acceleration phase" },
+                        { label: "Post-hospital", value: "5% in 10 days", width: "80%", color: "bg-sunrise-yellow", ref: "2", highlight: true, icon: Stethoscope, desc: "Critical recovery gap" },
+                        { label: "Age 70+", value: "10–15% loss", width: "95%", color: "bg-clinical-blue", ref: "1", icon: Award, desc: "High-risk threshold" }
                       ].map((stat, idx) => (
                         <div 
-                          key={idx} 
-                          className={`p-6 rounded-3xl border transition-all duration-300 shadow-sm space-y-4 ${
+                          key={`stat-${idx}`} 
+                          className={`p-6 rounded-[32px] border transition-all duration-500 shadow-sm flex flex-col justify-between group hover:shadow-md ${
                             stat.highlight 
-                              ? "bg-white border-sunrise-yellow ring-4 ring-sunrise-yellow/10 scale-[1.02] z-10" 
-                              : "bg-white border-border/50"
+                              ? "bg-white border-sunrise-yellow ring-4 ring-sunrise-yellow/10 scale-[1.05] z-10" 
+                              : "bg-white border-border/50 hover:border-functional-green/30"
                           }`}
                         >
-                          <div className="flex justify-between items-center">
-                            <span className={`font-bold text-lg ${stat.highlight ? "text-functional-green" : "text-muted-foreground"}`}>
-                              {stat.label}<sup>{stat.ref}</sup>
-                            </span>
-                            <span className={`font-bold ${stat.highlight ? "text-sunrise-yellow" : "text-functional-green"}`}>{stat.value}</span>
+                          <div className="flex items-start justify-between mb-4">
+                            <div className={`p-3 rounded-2xl ${stat.highlight ? "bg-sunrise-yellow/10 text-sunrise-yellow" : "bg-muted text-muted-foreground group-hover:bg-functional-green/10 group-hover:text-functional-green"} transition-colors`}>
+                              <stat.icon size={24} />
+                            </div>
+                            <span className={`font-bold text-xl ${stat.highlight ? "text-sunrise-yellow" : "text-functional-green"}`}>{stat.value}</span>
                           </div>
-                          <div className="h-3 w-full bg-muted rounded-full overflow-hidden">
-                            <motion.div 
-                              initial={{ width: 0 }}
-                              whileInView={{ width: stat.width }}
-                              transition={{ duration: 1.5, ease: "easeOut" }}
-                              className={`h-full rounded-full ${stat.color}`}
-                            />
+                          <div className="space-y-3">
+                            <div>
+                              <div className={`font-bold text-sm uppercase tracking-widest ${stat.highlight ? "text-functional-green" : "text-muted-foreground"}`}>
+                                {stat.label}<sup>{stat.ref}</sup>
+                              </div>
+                              <div className="text-xs text-muted-foreground/60 font-medium">{stat.desc}</div>
+                            </div>
+                            <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                whileInView={{ width: stat.width }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                className={`h-full rounded-full ${stat.color}`}
+                              />
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -193,39 +216,32 @@ export default function Science() {
 
                 {/* Energy Metabolism Tab (ATP Cycle) */}
                 <TabsContent value="atp-cycle" className="mt-0 outline-none">
-                  <div className="space-y-24">
-                    {/* Intro & Diagram */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                      <div className="space-y-8">
-                        <div className="space-y-6">
-                          <Badge variant="outline" className="rounded-full px-4 py-1 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit bg-functional-green/5">
-                            <Activity size={14} />
-                            <span className="text-[10px] font-bold uppercase tracking-widest">Energy Metabolism</span>
-                          </Badge>
-                          <h2 className="text-4xl md:text-5xl font-serif font-bold text-functional-green leading-tight">
-                            ATP: your body's <br />energy currency
-                          </h2>
-                          <p className="text-lg text-muted-foreground leading-relaxed">
-                            Every movement, every heartbeat requires ATP. As we age or recover from illness, mitochondrial efficiency declines, meaning less ATP is available for muscle contraction and cellular repair.
-                          </p>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 gap-4">
-                          {[
-                            { icon: <Zap size={18} />, label: "Energy Production" },
-                            { icon: <Activity size={18} />, label: "Muscle Function" },
-                            { icon: <Microscope size={18} />, label: "Cellular Repair" },
-                            { icon: <HeartPulse size={18} />, label: "Recovery Support" }
-                          ].map((item, idx) => (
-                            <div key={idx} className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-border/50 shadow-sm">
-                              <div className="text-functional-green/60">{item.icon}</div>
-                              <span className="text-[10px] font-bold text-clinical-blue uppercase tracking-widest">{item.label}</span>
-                            </div>
-                          ))}
-                        </div>
+                  <div className="space-y-20">
+                    {/* Intro Section */}
+                    <div className="max-w-4xl space-y-6">
+                      <Badge variant="outline" className="rounded-full px-4 py-1 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit bg-functional-green/5">
+                        <Activity size={14} />
+                        <span className="text-[10px] font-bold uppercase tracking-widest">Energy Metabolism</span>
+                      </Badge>
+                      <div className="space-y-4">
+                        <h2 className="text-4xl md:text-6xl font-serif font-bold text-functional-green leading-[1.1]">
+                          ATP: your body's <br />
+                          <span className="text-clinical-blue/70 italic">energy currency</span>
+                        </h2>
+                        <p className="text-xl md:text-2xl font-serif text-functional-green/80 leading-tight">
+                          Every movement, every heartbeat requires ATP.
+                        </p>
                       </div>
+                      <div className="max-w-2xl pt-4">
+                        <p className="text-lg text-muted-foreground leading-relaxed">
+                          As we age or recover from illness, mitochondrial efficiency declines. This means less ATP is available for muscle contraction and cellular repair — precisely when your body needs it most.<sup>2,3</sup>
+                        </p>
+                      </div>
+                    </div>
 
-                      <div className="relative group">
+                    {/* Diagram Section */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                      <div className="relative group order-2 lg:order-1">
                         <div className="w-full aspect-square bg-clinical-blue/5 rounded-[48px] border-2 border-clinical-blue/10 flex flex-col items-center justify-center p-8 shadow-inner relative overflow-hidden">
                           {/* Pulsing Background Glow */}
                           <motion.div 
@@ -238,82 +254,166 @@ export default function Science() {
                           />
 
                           <svg viewBox="0 0 400 400" className="w-full h-full relative z-10">
-                            {/* Simplified ATP Cycle Diagram for Tab */}
+                            <defs>
+                              <filter id="glow-tab">
+                                <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                                <feMerge>
+                                  <feMergeNode in="coloredBlur"/>
+                                  <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                              </filter>
+                            </defs>
+
+                            {/* Nodes */}
                             <g>
                               <motion.circle 
-                                cx="200" cy="60" r="40" 
+                                cx="200" cy="60" r="45" 
                                 fill="currentColor" 
                                 className="text-functional-green"
-                                animate={{ filter: ["drop-shadow(0 0 0px #2D5A27)", "drop-shadow(0 0 8px #2D5A27)", "drop-shadow(0 0 0px #2D5A27)"] }}
+                                animate={{ filter: ["drop-shadow(0 0 0px #2D5A27)", "drop-shadow(0 0 10px #2D5A27)", "drop-shadow(0 0 0px #2D5A27)"] }}
                                 transition={{ duration: 2, repeat: Infinity }}
                               />
-                              <text x="200" y="65" textAnchor="middle" className="fill-white font-bold text-base">ATP</text>
+                              <text x="200" y="65" textAnchor="middle" className="fill-white font-bold text-lg">ATP</text>
                             </g>
+
                             <g>
-                              <rect x="290" y="160" width="80" height="80" rx="20" fill="currentColor" className="text-clinical-blue/20" />
-                              <text x="330" y="205" textAnchor="middle" className="fill-clinical-blue font-bold text-[10px]">Muscle Work</text>
+                              <rect x="290" y="160" width="80" height="80" rx="24" fill="currentColor" className="text-clinical-blue/20" />
+                              <text x="330" y="195" textAnchor="middle" className="fill-clinical-blue font-bold text-[11px]">Muscle</text>
+                              <text x="330" y="212" textAnchor="middle" className="fill-clinical-blue font-bold text-[11px]">Work</text>
                             </g>
+
                             <g>
-                              <circle cx="200" cy="340" r="35" fill="currentColor" className="text-functional-green/40" />
-                              <text x="200" y="345" textAnchor="middle" className="fill-white font-bold text-[9px]">ADP + Cr</text>
+                              <circle cx="200" cy="340" r="40" fill="currentColor" className="text-functional-green/40" />
+                              <text x="200" y="338" textAnchor="middle" className="fill-white font-bold text-[10px]">ADP +</text>
+                              <text x="200" y="352" textAnchor="middle" className="fill-white font-bold text-[10px]">Creatine</text>
                             </g>
+
                             <g>
-                              <rect x="30" y="160" width="80" height="80" rx="20" fill="currentColor" className="text-clinical-blue/20" />
-                              <text x="70" y="205" textAnchor="middle" className="fill-clinical-blue font-bold text-[10px]">Phospho-Cr</text>
+                              <rect x="30" y="160" width="80" height="80" rx="24" fill="currentColor" className="text-clinical-blue/20" />
+                              <text x="70" y="205" textAnchor="middle" className="fill-clinical-blue font-bold text-[10px]">Phospho-</text>
+                              <text x="70" y="220" textAnchor="middle" className="fill-clinical-blue font-bold text-[10px]">creatine</text>
                             </g>
+
                             {/* Animated Arrows */}
                             <motion.path 
-                              d="M 245 80 Q 330 100 330 150" fill="none" stroke="currentColor" strokeWidth="3" className="text-functional-green"
-                              strokeDasharray="5, 10" animate={{ strokeDashoffset: [0, -15] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                              d="M 245 80 Q 330 100 330 150" fill="none" stroke="currentColor" strokeWidth="4" className="text-functional-green"
+                              strokeDasharray="10, 20" animate={{ strokeDashoffset: [0, -30] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                             />
                             <motion.path 
-                              d="M 70 150 Q 70 100 155 80" fill="none" stroke="currentColor" strokeWidth="3" className="text-functional-green"
-                              strokeDasharray="5, 10" animate={{ strokeDashoffset: [0, -15] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                              d="M 330 250 Q 330 300 245 320" fill="none" stroke="currentColor" strokeWidth="4" className="text-functional-green"
+                              strokeDasharray="10, 20" animate={{ strokeDashoffset: [0, -30] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            />
+                            <motion.path 
+                              d="M 155 320 Q 70 300 70 250" fill="none" stroke="currentColor" strokeWidth="4" className="text-functional-green"
+                              strokeDasharray="10, 20" animate={{ strokeDashoffset: [0, -30] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            />
+                            <motion.path 
+                              d="M 70 150 Q 70 100 155 80" fill="none" stroke="currentColor" strokeWidth="4" className="text-functional-green"
+                              strokeDasharray="10, 20" animate={{ strokeDashoffset: [0, -30] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                             />
                           </svg>
                         </div>
                         <p className="mt-6 text-center text-xs font-medium text-muted-foreground italic">
-                          The Phosphocreatine Shuttle: Regenerating energy in real-time.
+                          The Phosphocreatine Shuttle: Visualizing real-time energy regeneration.
                         </p>
+                      </div>
+
+                      <div className="space-y-8 order-1 lg:order-2">
+                        <div className="space-y-4">
+                          <h3 className="text-2xl font-serif font-bold text-functional-green">The Biochemistry of Strength</h3>
+                          <p className="text-muted-foreground text-sm leading-relaxed">
+                            Creatine doesn't just provide energy; it acts as a metabolic buffer. By facilitating the rapid recycling of ADP back into ATP, it prevents the accumulation of metabolic byproducts that lead to muscle fatigue.<sup>1,4</sup>
+                          </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4">
+                          {[
+                            {
+                              title: "ATP-CP System",
+                              desc: "The body's fastest way to regenerate energy. Critical for sudden movements.",
+                              icon: <Zap size={20} />
+                            },
+                            {
+                              title: "Metabolic Buffering",
+                              desc: "Reduces muscle 'burn' and fatigue during physical therapy sessions.",
+                              icon: <Activity size={20} />
+                            },
+                            {
+                              title: "Mitochondrial Support",
+                              desc: "Bypasses energy bottlenecks that occur during aging or illness.",
+                              icon: <Microscope size={20} />
+                            }
+                          ].map((item, i) => (
+                            <div key={`atp-benefit-${i}`} className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-border/50 shadow-sm hover:shadow-md transition-shadow">
+                              <div className="w-10 h-10 rounded-xl bg-functional-green/5 flex items-center justify-center text-functional-green shrink-0">
+                                {item.icon}
+                              </div>
+                              <div className="space-y-1">
+                                <h4 className="text-sm font-bold text-clinical-blue uppercase tracking-wider">{item.title}</h4>
+                                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Biochemistry Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {[
-                        {
-                          icon: <Zap className="text-functional-green" size={24} />,
-                          takeaway: "Fastest energy system",
-                          title: "The ATP-CP System",
-                          desc: "The body's fastest way to regenerate energy, anaerobic and instantaneous. Critical for sudden movements and standing up.",
-                          highlight: false
-                        },
-                        {
-                          icon: <Activity className="text-functional-green" size={24} />,
-                          takeaway: "Less fatigue in PT",
-                          title: "Metabolic Buffering",
-                          desc: "Prevents the accumulation of metabolic byproducts that lead to 'burning' and fatigue during physical therapy.",
-                          highlight: true
-                        }
-                      ].map((card, idx) => (
-                        <Card key={idx} className={`border-2 rounded-[32px] overflow-hidden bg-white ${card.highlight ? "border-functional-green/20 shadow-lg" : "border-border/50"}`}>
-                          <CardContent className="p-8 space-y-4">
-                            <div className="flex justify-between items-center">
-                              <div className="w-12 h-12 rounded-xl bg-functional-green/5 flex items-center justify-center text-functional-green">
-                                {card.icon}
-                              </div>
-                              <span className="text-[10px] font-black text-clinical-blue uppercase tracking-widest">{card.takeaway}</span>
+                    {/* Summary Box */}
+                    <div className="p-10 bg-functional-green text-white rounded-[40px] shadow-xl relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                        <div className="space-y-4">
+                          <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                            <Info size={24} className="text-sunrise-yellow" />
+                          </div>
+                          <h3 className="text-2xl font-serif font-bold">What this means for you</h3>
+                        </div>
+                        <div className="space-y-3">
+                          {[
+                            "More energy for physical therapy",
+                            "Reduced fatigue during daily tasks",
+                            "Faster recovery between activity",
+                            "Support for neurological drive"
+                          ].map((item, i) => (
+                            <div key={`atp-meaning-${i}`} className="flex items-center gap-3">
+                              <CheckCircle2 size={16} className="text-sunrise-yellow shrink-0" />
+                              <span className="text-sm font-bold opacity-90">{item}</span>
                             </div>
-                            <h3 className="text-xl font-serif font-bold text-functional-green">{card.title}</h3>
-                            <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-                          </CardContent>
-                        </Card>
-                      ))}
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* References Accordion */}
+                    <div className="max-w-3xl mx-auto">
+                      <Accordion className="w-full">
+                        <AccordionItem value="references-atp" className="border-none">
+                          <AccordionTrigger className="hover:no-underline py-4 group bg-muted/30 px-6 rounded-2xl">
+                            <div className="flex items-center gap-4 text-clinical-blue">
+                              <ChevronDown className="w-5 h-5 transition-transform duration-300 group-data-[state=open]:rotate-180" />
+                              <h4 className="text-sm font-bold uppercase tracking-widest">Sources & Citations (5)</h4>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="pt-8 px-6">
+                            <div className="space-y-4 text-xs text-muted-foreground leading-relaxed">
+                              {[
+                                "Wallimann T, et al. (1992). The 'phosphocreatine circuit' for cellular energy homeostasis. Biochem J, 281(Pt 1): 21–40.",
+                                "Kreider RB, et al. (2017). Safety and efficacy of creatine supplementation. J Int Soc Sports Nutr, 14: 18.",
+                                "Gualano B, et al. (2012). Creatine in the aging population. Amino Acids, 43(1): 51–62.",
+                                "Persky AM, Brazeau GA. (2001). Clinical pharmacology of creatine monohydrate. Pharmacol Rev, 53(2): 161–176.",
+                                "Bessman SP, Carpenter CL. (1985). The creatine-creatine phosphate energy shuttle. Annu Rev Biochem, 54: 831–862."
+                              ].map((ref, i) => (
+                                <p key={`ref-atp-${i}`} className="pl-4 border-l-2 border-functional-green/20">{ref}</p>
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
                     </div>
 
                     <div className="flex justify-center">
                       <Button 
-                        onClick={() => scrollToTabs("mechanism")}
+                        onClick={() => setActiveTab("mechanism")}
                         variant="outline" 
                         className="rounded-full border-functional-green text-functional-green hover:bg-functional-green hover:text-white font-bold"
                       >
@@ -418,7 +518,7 @@ export default function Science() {
                           icon: <CheckCircle2 className="text-functional-green" size={32} />
                         }
                       ].map((item, i) => (
-                        <div key={i} className="p-10 bg-white rounded-[40px] shadow-xl shadow-black/5 border border-border/50 text-center space-y-6">
+                        <div key={`outcome-${i}`} className="p-10 bg-white rounded-[40px] shadow-xl shadow-black/5 border border-border/50 text-center space-y-6">
                           <div className="w-16 h-16 rounded-2xl bg-functional-green/10 flex items-center justify-center mx-auto text-functional-green">
                             {item.icon}
                           </div>
@@ -445,7 +545,7 @@ export default function Science() {
                             "Faster recovery between periods of activity",
                             "Support for both physical and cognitive drive"
                           ].map((item, i) => (
-                            <div key={i} className="flex items-center gap-3">
+                            <div key={`advantage-${i}`} className="flex items-center gap-3">
                               <CheckCircle2 size={18} className="text-sunrise-yellow shrink-0" />
                               <span className="text-sm font-bold opacity-90">{item}</span>
                             </div>
@@ -453,6 +553,11 @@ export default function Science() {
                         </div>
                       </div>
                     </div>
+
+                    <ScienceExplainer 
+                      topic="ATP Cycle & Energy Metabolism" 
+                      context="How creatine facilitates the rapid recycling of ADP back into ATP to support muscle work and reduce fatigue during recovery." 
+                    />
                   </div>
                 </TabsContent>
               </motion.div>
@@ -566,8 +671,8 @@ export default function Science() {
                       </div>
                     </div>
                     <div className="space-y-4">
-                      <Button className="w-full h-14 rounded-xl bg-white text-functional-green hover:bg-sunrise-yellow font-bold text-lg shadow-xl">
-                        Professional Portal <ArrowRight size={20} className="ml-2" />
+                      <Button asChild className="w-full h-14 rounded-xl bg-white text-functional-green hover:bg-sunrise-yellow font-bold text-lg shadow-xl">
+                        <a href="mailto:clinical@functionalhealth.com">Professional Portal <ArrowRight size={20} className="ml-2" /></a>
                       </Button>
                       <p className="text-xs text-center text-white/60 italic">
                         Patients: explore our simplified research summaries.
@@ -585,7 +690,7 @@ export default function Science() {
       <section className="py-24 bg-warm-sunrise/20 border-t border-border/50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion className="w-full">
               <AccordionItem value="references" className="border-none">
                 <AccordionTrigger className="hover:no-underline py-0">
                   <div className="flex items-center gap-4 text-clinical-blue group">

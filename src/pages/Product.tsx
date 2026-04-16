@@ -1,6 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import ReactMarkdown from 'react-markdown';
+import { ai, SYSTEM_INSTRUCTION } from "@/lib/gemini";
 import { 
   CheckCircle2, 
   ShieldCheck, 
@@ -25,7 +27,11 @@ import {
   Stethoscope,
   PackageCheck,
   GlassWater,
-  CalendarCheck
+  CalendarCheck,
+  Loader2,
+  X,
+  MessageSquare,
+  Send
 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
@@ -33,6 +39,7 @@ import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
+import DosageCalculator from "../components/DosageCalculator";
 
 export default function Product() {
   const [email, setEmail] = useState("");
@@ -41,36 +48,86 @@ export default function Product() {
   const [currentImage, setCurrentImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [showSticky, setShowSticky] = useState(false);
+  const [isAutoplay, setIsAutoplay] = useState(true);
+  const [aiQuestion, setAiQuestion] = useState("");
+  const [aiAnswer, setAiAnswer] = useState("");
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const AUTOPLAY_INTERVAL = 5000; // 5 seconds
+
+  const handleAiAsk = async (question?: string) => {
+    const query = question || aiQuestion;
+    if (!query.trim() || isAiLoading) return;
+
+    setIsAiLoading(true);
+    setAiAnswer("");
+    if (!question) setAiQuestion("");
+
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        config: {
+          systemInstruction: SYSTEM_INSTRUCTION + "\n\nYou are an expert on the ingredients in FunctionalHealth products. Answer the user's question specifically about Micronized Creatine Monohydrate, HMB, or Vitamin D3. Keep it clinical, evidence-based, and concise. Use Google Search to find specific clinical data if needed.",
+          tools: [{ googleSearch: {} }],
+        },
+        contents: query,
+      });
+
+      setAiAnswer(response.text || "I couldn't find a specific answer to that. Please try asking about creatine's role in muscle energy or recovery.");
+    } catch (error) {
+      console.error("AI Expert error:", error);
+      setAiAnswer("Sorry, I'm having trouble connecting to my research database. Please try again in a moment.");
+    } finally {
+      setIsAiLoading(false);
+    }
+  };
 
   const productImages = [
     {
       id: 1,
-      type: 'lifestyle',
-      url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=1200',
-      alt: 'Recovery patient feeling energized and active'
+      url: '/product-1.png',
+      alt: 'Built with clinical intent - Research focused on functional recovery'
     },
     {
       id: 2,
-      type: 'render',
-      title: 'Clinical Design',
-      alt: 'Product Design Concept'
+      url: '/product-2.png',
+      alt: 'Designed for real-world recovery - Supporting rehabilitation and strength'
     },
     {
       id: 3,
-      type: 'lifestyle',
-      url: 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&q=80&w=1200',
-      alt: 'Mixing creatine in a clean clinical environment'
+      url: '/product-3.png',
+      alt: 'FunctionalHealth Micronized Creatine Monohydrate - Physician-backed purity'
     },
     {
       id: 4,
-      type: 'purity',
-      url: 'https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=1200',
-      alt: 'Laboratory testing for pharmaceutical purity'
+      url: '/product-4.png',
+      alt: 'Supports energy where recovery happens - ATP regeneration diagram'
+    },
+    {
+      id: 5,
+      url: '/product-5.png',
+      alt: 'Recovery doesn\'t stop at discharge - Supporting independence after hospital'
+    },
+    {
+      id: 6,
+      url: '/product-6.png',
+      alt: 'FunctionalHealth product pouch and convenient single-serve stick pack'
     }
   ];
 
   const nextImage = () => setCurrentImage((prev) => (prev + 1) % productImages.length);
   const prevImage = () => setCurrentImage((prev) => (prev - 1 + productImages.length) % productImages.length);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isAutoplay) {
+      interval = setInterval(() => {
+        nextImage();
+      }, AUTOPLAY_INTERVAL);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isAutoplay, currentImage]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -99,8 +156,8 @@ export default function Product() {
               </div>
               <div className="flex items-center gap-6">
                 <span className="font-bold text-lg">$48.00</span>
-                <Button className="bg-functional-green hover:bg-functional-green/90 font-bold px-8 rounded-full">
-                  Get Notified at Launch
+                <Button asChild className="bg-functional-green hover:bg-functional-green/90 font-bold px-8 rounded-full">
+                  <a href="#waitlist">Get Notified at Launch</a>
                 </Button>
               </div>
             </div>
@@ -113,53 +170,31 @@ export default function Product() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             {/* Left: Image Gallery */}
-            <div className="relative group">
-              <div className="aspect-square bg-functional-green/5 rounded-[40px] flex items-center justify-center overflow-hidden border border-border relative">
+            <div 
+              className="relative group"
+              onMouseEnter={() => setIsAutoplay(false)}
+              onMouseLeave={() => setIsAutoplay(true)}
+            >
+              <div className="aspect-square bg-white rounded-[40px] flex items-center justify-center overflow-hidden border border-border relative p-8">
                 <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentImage}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="w-full h-full flex items-center justify-center"
-                  >
-                    {productImages[currentImage].type === 'render' ? (
-                      <div className="relative flex items-end gap-4 p-8">
-                        {/* Pouch */}
-                        <div className="relative w-48 h-64 bg-white rounded-xl shadow-2xl border border-border flex flex-col items-center p-6 text-center transform -rotate-3 translate-y-4">
-                          <div className="w-10 h-10 rounded-full bg-functional-green flex items-center justify-center text-white mb-3">
-                            <ShieldCheck size={20} />
-                          </div>
-                          <h3 className="font-serif font-bold text-lg mb-1">
-                            <span className="text-functional-green text-sm">Functional</span>
-                            <span className="text-clinical-blue text-sm">Health</span>
-                          </h3>
-                          <div className="w-full h-px bg-border mb-4" />
-                          <h4 className="text-xl font-serif font-bold text-functional-green">CREATINE</h4>
-                          <p className="text-[8px] text-muted-foreground mt-1 uppercase tracking-widest">Clinical Recovery Series</p>
-                          <div className="mt-auto text-[6px] text-muted-foreground/30 uppercase tracking-widest">
-                            30 Stick Packs • Pharmaceutical Grade
-                          </div>
-                        </div>
-                        {/* Stick Pack */}
-                        <div className="relative w-12 h-56 bg-white rounded-md shadow-xl border border-border flex flex-col items-center p-2 text-center transform rotate-6">
-                          <div className="w-4 h-4 rounded-full bg-functional-green flex items-center justify-center text-white mb-2">
-                            <ShieldCheck size={8} />
-                          </div>
-                          <div className="text-[4px] font-bold text-functional-green uppercase vertical-text">Creatine</div>
-                          <div className="mt-auto text-[4px] text-muted-foreground font-bold">5g</div>
-                        </div>
-                      </div>
-                    ) : (
+                    <motion.div
+                      key={currentImage}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 1.05 }}
+                      transition={{ 
+                        duration: 0.6, 
+                        ease: [0.22, 1, 0.36, 1] 
+                      }}
+                      className="w-full h-full flex items-center justify-center"
+                    >
                       <img 
                         src={productImages[currentImage].url} 
                         alt={productImages[currentImage].alt}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         referrerPolicy="no-referrer"
                       />
-                    )}
-                  </motion.div>
+                    </motion.div>
                 </AnimatePresence>
                 
                 {/* Navigation Arrows */}
@@ -180,12 +215,12 @@ export default function Product() {
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
                   {productImages.map((_, idx) => (
                     <button
-                      key={idx}
+                      key={`dot-${idx}`}
                       onClick={() => setCurrentImage(idx)}
-                      className={`h-2.5 rounded-full transition-all border border-white/50 ${
+                      className={`h-3 rounded-full transition-all border-2 ${
                         currentImage === idx 
-                          ? "w-8 bg-functional-green shadow-sm" 
-                          : "w-2.5 bg-white/40 hover:bg-white/60"
+                          ? "w-10 bg-functional-green border-functional-green shadow-lg" 
+                          : "w-3 bg-white/60 border-white/80 hover:bg-white hover:border-white"
                       }`}
                     />
                   ))}
@@ -203,10 +238,10 @@ export default function Product() {
                     <span className="text-[10px] font-bold uppercase tracking-wider text-clinical-blue">NSF Certified</span>
                   </div>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-serif font-bold text-functional-green">Micronized Creatine Monohydrate</h1>
-                <div className="flex items-center gap-4">
-                  <p className="text-3xl font-bold text-foreground">$48.00</p>
-                  <div className="flex items-center gap-4 py-1 px-2 border rounded-full bg-muted/30">
+                <h1 className="text-4xl md:text-6xl font-serif font-bold text-functional-green leading-tight">Micronized Creatine Monohydrate</h1>
+                <div className="flex items-center gap-6">
+                  <p className="text-4xl font-bold text-foreground">$48.00</p>
+                  <div className="flex items-center gap-4 py-1.5 px-3 border rounded-full bg-muted/30">
                     <div className="flex items-center gap-2 text-[10px] text-clinical-blue font-bold uppercase tracking-widest">
                       <ShieldCheck size={14} /> 3rd-Party Tested
                     </div>
@@ -236,7 +271,7 @@ export default function Product() {
                     "Helps maintain independence",
                     "Pharmaceutical-grade purity"
                   ].map((benefit, i) => (
-                    <div key={i} className="flex items-center gap-3">
+                    <div key={`benefit-hero-${i}`} className="flex items-center gap-3">
                       <CheckCircle2 size={18} className="text-functional-green shrink-0" />
                       <span className="text-sm font-medium text-foreground">{benefit}</span>
                     </div>
@@ -244,14 +279,37 @@ export default function Product() {
                 </div>
               </div>
               
-              <div className="pt-4 space-y-6">
-                <div className="p-8 bg-warm-sunrise/50 rounded-[32px] border border-functional-green/10 space-y-6 shadow-sm">
-                  <div className="space-y-2">
+              <div className="pt-6 space-y-8">
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center border rounded-2xl p-1 bg-muted/20">
+                    <button 
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-12 h-12 flex items-center justify-center hover:bg-white rounded-xl transition-colors"
+                    >
+                      -
+                    </button>
+                    <span className="w-12 text-center font-bold text-lg">{quantity}</span>
+                    <button 
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-12 h-12 flex items-center justify-center hover:bg-white rounded-xl transition-colors"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <Button asChild size="lg" className="flex-1 rounded-2xl h-14 bg-functional-green hover:bg-functional-green/90 shadow-xl shadow-functional-green/20 font-bold text-lg">
+                    <a href="#waitlist">Reserve Your Spot</a>
+                  </Button>
+                </div>
+
+                <div id="waitlist" className="p-10 bg-warm-sunrise rounded-[40px] border-2 border-functional-green/20 space-y-8 shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-functional-green/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                  <div className="space-y-4 relative z-10">
                     <div className="flex items-center gap-2">
-                      <Badge className="bg-sunrise-yellow text-black border-none font-bold">Pre-Launch</Badge>
-                      <h3 className="text-xl font-serif font-bold text-functional-green">Get Notified at Launch</h3>
+                      <div className="w-3 h-3 rounded-full bg-functional-green animate-pulse" />
+                      <span className="text-xs font-bold uppercase tracking-[0.2em] text-clinical-blue">Limited Release • Coming Soon</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">Be the first to know when our Clinical Stick Packs are available.</p>
+                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-functional-green">Join the Priority Waitlist</h3>
+                    <p className="text-lg text-muted-foreground leading-relaxed">FunctionalHealth is currently in final clinical validation. Join 5,000+ others to receive early access and a 20% launch discount.</p>
                   </div>
                   
                   <div className="flex flex-col gap-4">
@@ -271,7 +329,7 @@ export default function Product() {
                           <Plus size={16} />
                         </button>
                       </div>
-                      <Button className="flex-1 h-14 rounded-xl bg-functional-green hover:bg-functional-green/90 font-bold text-white shadow-lg shadow-functional-green/20 text-lg">
+                      <Button onClick={() => document.getElementById('waitlist-email')?.focus()} className="flex-1 h-14 rounded-xl bg-functional-green hover:bg-functional-green/90 font-bold text-white shadow-lg shadow-functional-green/20 text-lg">
                         Start Your Recovery
                       </Button>
                     </div>
@@ -291,6 +349,7 @@ export default function Product() {
                       className="flex flex-col sm:flex-row gap-3"
                     >
                       <Input 
+                        id="waitlist-email"
                         type="email" 
                         placeholder="your@email.com" 
                         value={email}
@@ -362,7 +421,7 @@ export default function Product() {
                 bg: "bg-warm-sunrise/5"
               }
             ].map((benefit, idx) => (
-              <Card key={idx} className="group border border-border/50 shadow-sm hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 rounded-[32px] bg-white overflow-hidden">
+              <Card key={`benefit-card-${idx}`} className="group border border-border/50 shadow-sm hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 rounded-[32px] bg-white overflow-hidden">
                 <CardContent className="p-10 space-y-6">
                   <div className={`w-14 h-14 rounded-2xl ${benefit.bg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
                     {benefit.icon}
@@ -445,7 +504,7 @@ export default function Product() {
                   icon: <GlassWater className="text-functional-green" size={32} />
                 }
               ].map((step, idx) => (
-                <div key={idx} className="text-center space-y-6 group">
+                <div key={`usage-step-${idx}`} className="text-center space-y-6 group">
                   <div className="w-20 h-20 rounded-[28px] bg-white shadow-lg border border-border/50 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform relative">
                     <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-functional-green text-white flex items-center justify-center font-bold text-sm shadow-md">
                       {step.number}
@@ -461,6 +520,10 @@ export default function Product() {
                 </div>
               ))}
             </div>
+          </div>
+
+          <div className="mt-20">
+            <DosageCalculator />
           </div>
         </div>
       </section>
@@ -514,7 +577,7 @@ export default function Product() {
                 description: "Meets the rigorous quality demands of post-acute care patients and long-term supplementation protocols."
               }
             ].map((item, idx) => (
-              <Card key={idx} className="border border-border/50 shadow-sm rounded-[32px] bg-card hover:border-functional-green/30 transition-colors">
+              <Card key={`purity-item-${idx}`} className="border border-border/50 shadow-sm rounded-[32px] bg-card hover:border-functional-green/30 transition-colors">
                 <CardContent className="p-10 space-y-6">
                   <div className="text-3xl font-serif font-bold text-functional-green/40">{item.stat}</div>
                   <div className="space-y-3">
@@ -548,7 +611,7 @@ export default function Product() {
                   "Third-party tested for contaminants",
                   "Free from additives and fillers"
                 ].map((text, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm font-bold text-foreground">
+                  <div key={`purity-check-${i}`} className="flex items-center gap-3 text-sm font-bold text-foreground">
                     <CheckCircle2 size={18} className="text-functional-green" /> {text}
                   </div>
                 ))}
@@ -561,7 +624,7 @@ export default function Product() {
                 <div className="text-3xl font-serif font-bold text-functional-green">Creavitalis®</div>
                 <p className="text-xs text-muted-foreground leading-relaxed">The gold standard in pharmaceutical-grade creatine monohydrate.</p>
               </div>
-              <Accordion type="single" collapsible className="w-full">
+              <Accordion className="w-full">
                 <AccordionItem value="partner-info" className="border-none">
                   <AccordionTrigger className="justify-center gap-2 hover:no-underline text-xs font-bold uppercase tracking-widest text-clinical-blue py-2">
                     Learn More
@@ -577,6 +640,112 @@ export default function Product() {
                 </a>
               </Button>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Ingredient Expert Section */}
+      <section className="py-24 bg-functional-green overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-sunrise-yellow rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-5xl mx-auto bg-white rounded-[48px] shadow-2xl overflow-hidden border border-white/10">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              <div className="p-12 md:p-16 space-y-8 bg-secondary/10">
+                <div className="space-y-4">
+                  <Badge variant="outline" className="border-functional-green/20 text-functional-green bg-functional-green/5 font-bold uppercase tracking-widest text-[10px]">
+                    Interactive Science
+                  </Badge>
+                  <h2 className="text-4xl md:text-5xl font-serif font-bold text-functional-green leading-tight">
+                    Ask our AI <br />
+                    <span className="text-clinical-blue italic">Ingredient Expert.</span>
+                  </h2>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Have a specific question about our pharmaceutical-grade creatine? Ask our AI expert for evidence-based answers grounded in clinical research.
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60">Suggested Questions:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      "How does micronization help absorption?",
+                      "Is this safe for long-term use?",
+                      "What is Creavitalis purity?",
+                      "Creatine for brain health?"
+                    ].map((q, i) => (
+                      <button 
+                        key={`ai-suggested-${i}`}
+                        onClick={() => handleAiAsk(q)}
+                        className="text-xs font-medium px-4 py-2 rounded-full bg-white border border-border hover:border-functional-green hover:text-functional-green transition-all text-left"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-12 md:p-16 flex flex-col justify-between space-y-8">
+                <div className="flex-grow space-y-6">
+                  <div className="relative">
+                    <Input 
+                      placeholder="Type your question here..."
+                      value={aiQuestion}
+                      onChange={(e) => setAiQuestion(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleAiAsk()}
+                      className="rounded-2xl h-14 pr-14 border-border focus-visible:ring-functional-green"
+                    />
+                    <Button 
+                      onClick={() => handleAiAsk()}
+                      disabled={isAiLoading || !aiQuestion.trim()}
+                      className="absolute right-2 top-2 w-10 h-10 rounded-xl bg-functional-green hover:bg-functional-green/90 p-0"
+                    >
+                      {isAiLoading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+                    </Button>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {aiAnswer ? (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="p-6 rounded-3xl bg-functional-green/5 border border-functional-green/10 space-y-4"
+                      >
+                        <div className="flex items-center gap-2 text-functional-green">
+                          <Sparkles size={16} />
+                          <span className="text-[10px] font-bold uppercase tracking-widest">Expert Answer</span>
+                        </div>
+                        <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap markdown-body">
+                          <ReactMarkdown>{aiAnswer}</ReactMarkdown>
+                        </div>
+                      </motion.div>
+                    ) : !isAiLoading && (
+                      <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-40 py-12">
+                        <MessageSquare size={48} className="text-muted-foreground" />
+                        <p className="text-sm font-medium">Ask a question to see the AI analysis</p>
+                      </div>
+                    )}
+                  </AnimatePresence>
+
+                  {isAiLoading && !aiAnswer && (
+                    <div className="flex flex-col items-center justify-center space-y-4 py-12">
+                      <Loader2 className="w-8 h-8 text-functional-green animate-spin" />
+                      <p className="text-sm text-muted-foreground animate-pulse font-medium">Consulting research database...</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-6 border-t flex items-center gap-3 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                  <ShieldCheck size={14} className="text-functional-green" />
+                  Evidence-Based • Clinical Standard • AI Powered
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -608,7 +777,7 @@ export default function Product() {
                     "Caregivers supporting recovery at home",
                     "Health-conscious adults focused on longevity"
                   ].map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-4">
+                    <div key={`who-item-${idx}`} className="flex items-center gap-4">
                       <div className="w-6 h-6 rounded-full bg-functional-green/10 flex items-center justify-center shrink-0">
                         <CheckCircle2 size={14} className="text-functional-green" />
                       </div>
@@ -660,7 +829,7 @@ export default function Product() {
             <p className="text-muted-foreground">Everything you need to know about Clinical Creatine support.</p>
           </div>
           
-          <Accordion type="single" collapsible className="w-full space-y-4">
+          <Accordion className="w-full space-y-4">
             {[
               {
                 q: "Is creatine safe for older adults?",

@@ -1,9 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, Activity, ShieldCheck, Microscope, BookOpen, Info, Home, Users } from "lucide-react";
+import { Menu, X, Activity, ShieldCheck, Microscope, BookOpen, Info, Home, Users, Instagram, Twitter, Linkedin } from "lucide-react";
 import { useState, useEffect } from "react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import AnnouncementBar from "./AnnouncementBar";
+import RecoveryAssistant from "./RecoveryAssistant";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -27,17 +29,18 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+      <AnnouncementBar />
       {/* Navigation */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 h-24 md:h-28 flex items-center justify-between gap-8">
+        <div className="container mx-auto px-4 h-24 md:h-28 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 group shrink-0">
             <img 
               src="/logo.png" 
               alt="FunctionalHealth Logo" 
-              className="h-12 md:h-16 w-auto transition-transform group-hover:scale-105"
+              className="h-10 md:h-14 w-auto transition-transform group-hover:scale-105"
               referrerPolicy="no-referrer"
             />
-            <span className="text-xl md:text-2xl font-serif font-bold tracking-tight">
+            <span className="text-lg md:text-xl font-serif font-bold tracking-tight hidden sm:inline-block">
               <span className="text-functional-green">Functional</span>
               <span className="text-clinical-blue">Health</span>
             </span>
@@ -50,8 +53,8 @@ export default function Layout({ children }: LayoutProps) {
                 <Link
                   key={link.name}
                   to={link.href}
-                  className={`text-sm font-medium transition-colors hover:text-primary whitespace-nowrap ${
-                    location.pathname === link.href ? "text-primary" : "text-muted-foreground"
+                  className={`text-sm font-bold uppercase tracking-widest transition-colors hover:text-functional-green whitespace-nowrap ${
+                    location.pathname === link.href ? "text-functional-green" : "text-muted-foreground"
                   }`}
                 >
                   {link.name}
@@ -59,11 +62,11 @@ export default function Layout({ children }: LayoutProps) {
               ))}
             </nav>
 
-            <div className="flex items-center gap-4">
-              <Button asChild variant="outline" className="rounded-full h-12 px-8 border-clinical-blue text-clinical-blue hover:bg-clinical-blue hover:text-white font-bold text-base transition-all whitespace-nowrap">
+            <div className="flex items-center gap-3">
+              <Button asChild variant="outline" className="rounded-full h-12 w-[180px] border-clinical-blue text-clinical-blue hover:bg-clinical-blue hover:text-white font-bold text-sm transition-all whitespace-nowrap">
                 <Link to="/community">Join Community</Link>
               </Button>
-              <Button asChild className="rounded-full h-12 px-8 bg-functional-green hover:bg-functional-green/90 shadow-lg shadow-functional-green/20 font-bold text-base whitespace-nowrap">
+              <Button asChild className="rounded-full h-12 w-[180px] bg-functional-green hover:bg-functional-green/90 shadow-lg shadow-functional-green/20 font-bold text-sm whitespace-nowrap">
                 <Link to="/product">Begin Your Recovery</Link>
               </Button>
             </div>
@@ -150,10 +153,9 @@ export default function Layout({ children }: LayoutProps) {
                 Built for Independence.
               </div>
               <div className="flex items-center gap-4 pt-2">
-                <a href="#" className="text-white/60 hover:text-sunrise-yellow transition-colors"><Activity size={20} /></a>
-                <a href="#" className="text-white/60 hover:text-sunrise-yellow transition-colors"><Users size={20} /></a>
-                <a href="#" className="text-white/60 hover:text-sunrise-yellow transition-colors"><ShieldCheck size={20} /></a>
-                <a href="#" className="text-white/60 hover:text-sunrise-yellow transition-colors"><Microscope size={20} /></a>
+                <a href="https://instagram.com/functionalhealth" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-sunrise-yellow transition-colors" title="Instagram"><Instagram size={20} /></a>
+                <a href="https://twitter.com/functionalhealth" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-sunrise-yellow transition-colors" title="Twitter"><Twitter size={20} /></a>
+                <a href="https://linkedin.com/company/functionalhealth" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-sunrise-yellow transition-colors" title="LinkedIn"><Linkedin size={20} /></a>
               </div>
             </div>
             <div>
@@ -163,7 +165,6 @@ export default function Layout({ children }: LayoutProps) {
                 <li><Link to="/science" className="hover:text-white transition-colors">The Science</Link></li>
                 <li><Link to="/education" className="hover:text-white transition-colors">Education</Link></li>
                 <li><Link to="/community" className="hover:text-white transition-colors">Recovery Community</Link></li>
-                <li><Link to="/media-lab" className="hover:text-white transition-colors">Media Lab</Link></li>
               </ul>
             </div>
             <div>
@@ -176,8 +177,8 @@ export default function Layout({ children }: LayoutProps) {
             <div>
               <h4 className="font-serif font-bold mb-6 text-lg">Legal</h4>
               <ul className="space-y-3 text-sm text-white/60">
-                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+                <li><Link to="/about" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/about" className="hover:text-white transition-colors">Terms of Service</Link></li>
                 <li className="text-[10px] pt-6 leading-tight opacity-40">
                   *These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
                 </li>
@@ -189,6 +190,7 @@ export default function Layout({ children }: LayoutProps) {
           </div>
         </div>
       </footer>
+      <RecoveryAssistant />
     </div>
   );
 }

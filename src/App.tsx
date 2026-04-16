@@ -10,9 +10,8 @@ import Science from "./pages/Science";
 import Product from "./pages/Product";
 import About from "./pages/About";
 import Education from "./pages/Education";
-import ATPCycle from "./pages/ATPCycle";
-import MediaLab from "./pages/MediaLab";
 import Community from "./pages/Community";
+import Quiz from "./pages/Quiz";
 
 export default function App() {
   return (
@@ -21,12 +20,11 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/science" element={<Science />} />
-          <Route path="/science/atp-cycle" element={<ATPCycle />} />
           <Route path="/product" element={<Product />} />
           <Route path="/about" element={<About />} />
           <Route path="/education" element={<Education />} />
-          <Route path="/media-lab" element={<MediaLab />} />
           <Route path="/community" element={<Community />} />
+          <Route path="/quiz" element={<Quiz />} />
         </Routes>
       </Layout>
     </Router>

@@ -1,17 +1,51 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Clock, BookOpen, Microscope, ChevronRight } from "lucide-react";
+import { ArrowRight, Clock, BookOpen, Microscope, ChevronRight, Sparkles, Loader2, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "motion/react";
+import ReactMarkdown from 'react-markdown';
+import { ai, SYSTEM_INSTRUCTION } from "@/lib/gemini";
 
 import { useState, useEffect } from "react";
 
 export default function Education() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [summarizingArticle, setSummarizingArticle] = useState<any>(null);
+  const [summary, setSummary] = useState("");
+  const [isSummarizing, setIsSummarizing] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleSummarize = async (article: any) => {
+    setSummarizingArticle(article);
+    setIsSummarizing(true);
+    setSummary("");
+
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        config: {
+          systemInstruction: SYSTEM_INSTRUCTION + "\n\nYou are an expert at summarizing clinical research for patients. Provide a concise, 3-bullet point summary of the clinical significance of the following article. " + 
+            (article.link ? "Use the provided URL to read the full content and summarize it accurately." : "Use Google Search to find information about this topic if the excerpt is insufficient.") + 
+            " Focus on 'Why it matters' and 'Key takeaway'. Always cite the source if you find external data.",
+          tools: article.link ? [{ urlContext: {} }] : [{ googleSearch: {} }],
+        },
+        contents: article.link 
+          ? `Please summarize the content at this URL: ${article.link}. Article Title: ${article.title}`
+          : `Article Title: ${article.title}\nCategory: ${article.category}\nExcerpt: ${article.excerpt}`,
+      });
+
+      setSummary(response.text || "Could not generate summary at this time.");
+    } catch (error) {
+      console.error("Summary error:", error);
+      setSummary("Sorry, I encountered an error while summarizing this research. Please try again later.");
+    } finally {
+      setIsSummarizing(false);
+    }
+  };
 
   const categories = ["All", "Creatine", "Recovery", "Healthy Aging & Longevity", "Nutrition", "Research", "Caregiving"];
 
@@ -83,13 +117,13 @@ export default function Education() {
   return (
     <div className="flex flex-col">
       {/* Education Header */}
-      <section className="py-32 bg-warm-sunrise">
+      <section className="py-16 md:py-20 bg-warm-sunrise">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto space-y-10">
+          <div className="text-center max-w-3xl mx-auto space-y-6 md:space-y-8">
             <img 
               src="/logo.png" 
               alt="FunctionalHealth Logo" 
-              className="h-24 md:h-32 w-auto mx-auto drop-shadow-md"
+              className="h-16 md:h-24 w-auto mx-auto drop-shadow-md"
               referrerPolicy="no-referrer"
             />
             <Badge variant="outline" className="rounded-full px-6 py-2 border-functional-green/20 text-functional-green flex items-center gap-2 w-fit mx-auto bg-functional-green/5">
@@ -143,7 +177,9 @@ export default function Education() {
                   <span className="flex items-center gap-2"><Clock size={14} /> 15 min read</span>
                   <span className="flex items-center gap-2"><Microscope size={14} /> Evidence-Backed</span>
                 </div>
-                <Button className="rounded-full bg-white text-functional-green hover:bg-sunrise-yellow px-8 border-none transition-colors">Read the Full Guide</Button>
+                <Button asChild className="rounded-full bg-white text-functional-green hover:bg-sunrise-yellow px-8 border-none transition-colors">
+                  <Link to="/science">Read the Full Guide</Link>
+                </Button>
               </div>
               <div className="lg:col-span-2 h-full min-h-[300px]">
                 <img 
@@ -163,7 +199,7 @@ export default function Education() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredArticles.map((article, index) => (
-              <Card key={index} className="border border-border/50 shadow-sm hover:shadow-md transition-all duration-300 rounded-2xl bg-white flex flex-col h-full">
+              <Card key={`article-${index}`} className="border border-border/50 shadow-sm hover:shadow-md transition-all duration-300 rounded-2xl bg-white flex flex-col h-full">
                 <CardContent className="p-8 space-y-6 flex flex-col h-full">
                   <div className="flex items-center justify-between">
                     <Badge variant="outline" className="bg-functional-green/5 text-functional-green border-functional-green/10 text-[10px] uppercase tracking-widest px-3 py-0.5">{article.category}</Badge>
@@ -178,7 +214,7 @@ export default function Education() {
                       {article.excerpt}
                     </p>
                   </div>
-                  <div className="pt-4">
+                  <div className="pt-4 flex flex-wrap items-center justify-between gap-4">
                     {article.link ? (
                       <Button asChild variant="link" className="p-0 h-auto text-clinical-blue font-bold flex items-center gap-1 group">
                         <a href={article.link} target="_blank" rel="noopener noreferrer">
@@ -186,10 +222,22 @@ export default function Education() {
                         </a>
                       </Button>
                     ) : (
-                      <Button variant="link" className="p-0 h-auto text-clinical-blue font-bold flex items-center gap-1 group">
-                        Read article <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                      <Button asChild variant="link" className="p-0 h-auto text-clinical-blue font-bold flex items-center gap-1 group">
+                        <Link to="/science">
+                          Read article <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                        </Link>
                       </Button>
                     )}
+                    
+                    <Button 
+                      onClick={() => handleSummarize(article)}
+                      variant="outline" 
+                      size="sm" 
+                      className="rounded-full border-functional-green/20 text-functional-green hover:bg-functional-green/5 gap-2 text-[10px] font-bold uppercase tracking-widest"
+                    >
+                      <Sparkles size={12} />
+                      AI Summary
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -199,7 +247,7 @@ export default function Education() {
       </section>
 
       {/* Newsletter Section (Moved Above CTA) */}
-      <section className="py-24 bg-pathway border-t">
+      <section className="py-16 bg-pathway border-t">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mx-auto shadow-sm border border-border">
@@ -223,22 +271,88 @@ export default function Education() {
       </section>
 
       {/* Footer CTA Section (Moved to Bottom & Updated) */}
-      <section className="py-24 bg-secondary/30 border-t">
+      <section className="py-16 bg-secondary/30 border-t">
         <div className="container mx-auto px-4 text-center space-y-8">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground">Have questions about recovery nutrition?</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Our clinical team is available to answer your questions and provide guidance on our research-backed protocols.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90">
-              Contact Support
+            <Button asChild size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90">
+              <a href="mailto:support@functionalhealth.com">Contact Support</a>
             </Button>
-            <Button variant="outline" size="lg" className="rounded-full px-8 border-border bg-background hover:bg-secondary/50">
-              Email Clinical Team
+            <Button asChild variant="outline" size="lg" className="rounded-full px-8 border-border bg-background hover:bg-secondary/50">
+              <a href="mailto:clinical@functionalhealth.com">Email Clinical Team</a>
             </Button>
           </div>
         </div>
       </section>
+      {/* AI Summary Modal */}
+      <AnimatePresence>
+        {summarizingArticle && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="bg-white rounded-[32px] shadow-2xl w-full max-w-lg overflow-hidden border border-border"
+            >
+              <div className="p-8 space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-functional-green/10 flex items-center justify-center text-functional-green">
+                      <Sparkles size={20} />
+                    </div>
+                    <div>
+                      <h3 className="font-serif font-bold text-xl text-functional-green">AI Research Summary</h3>
+                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Powered by Gemini</p>
+                    </div>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={() => setSummarizingArticle(null)}
+                    className="rounded-full hover:bg-secondary"
+                  >
+                    <X size={20} />
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="p-4 bg-secondary/30 rounded-2xl border border-border/50">
+                    <h4 className="text-sm font-bold text-foreground mb-1">{summarizingArticle.title}</h4>
+                    <p className="text-xs text-muted-foreground line-clamp-2">{summarizingArticle.excerpt}</p>
+                  </div>
+
+                  <div className="min-h-[150px] flex flex-col justify-center">
+                    {isSummarizing ? (
+                      <div className="flex flex-col items-center justify-center space-y-4 py-8">
+                        <Loader2 className="w-8 h-8 text-functional-green animate-spin" />
+                        <p className="text-sm text-muted-foreground animate-pulse">Analyzing clinical significance...</p>
+                      </div>
+                    ) : (
+                      <div className="prose prose-sm max-w-none">
+                        <div className="text-foreground leading-relaxed whitespace-pre-wrap markdown-body">
+                          <ReactMarkdown>{summary}</ReactMarkdown>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t flex justify-end">
+                  <Button 
+                    onClick={() => setSummarizingArticle(null)}
+                    className="rounded-full bg-functional-green hover:bg-functional-green/90 px-8"
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
