@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Microscope, ShieldCheck, HeartPulse, Users, Instagram, Twitter, Linkedin, Activity, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 import { useEffect } from "react";
 
@@ -20,7 +21,7 @@ export default function About() {
           <div className="max-w-4xl">
             <div className="flex flex-col md:flex-row md:items-center gap-6 mb-10">
               <img 
-                src="/logo.png" 
+                src={logo} 
                 alt="FunctionalHealth Logo" 
                 className="h-24 md:h-32 w-auto drop-shadow-md"
               />
