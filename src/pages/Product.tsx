@@ -192,7 +192,6 @@ export default function Product() {
                         src={productImages[currentImage].url} 
                         alt={productImages[currentImage].alt}
                         className="w-full h-full object-contain"
-                        referrerPolicy="no-referrer"
                       />
                     </motion.div>
                 </AnimatePresence>

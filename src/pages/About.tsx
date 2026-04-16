@@ -23,7 +23,6 @@ export default function About() {
                 src="/logo.png" 
                 alt="FunctionalHealth Logo" 
                 className="h-24 md:h-32 w-auto drop-shadow-md"
-                referrerPolicy="no-referrer"
               />
               <div className="space-y-3">
                 <Badge className="bg-functional-green text-white border-none px-6 py-2 text-sm font-bold">Our Mission</Badge>

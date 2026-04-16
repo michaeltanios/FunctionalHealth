@@ -132,7 +132,6 @@ export default function Home() {
                       src="/logo.png" 
                       alt="FunctionalHealth Logo" 
                       className="h-24 md:h-32 w-auto drop-shadow-md"
-                      referrerPolicy="no-referrer"
                     />
                     <Badge variant="secondary" className="px-4 py-1 text-xs font-bold tracking-wider uppercase bg-white/80 text-clinical-blue border-none backdrop-blur-sm shadow-sm">
                       {heroSlides[currentSlide].badge}
@@ -459,7 +458,7 @@ export default function Home() {
               
               {/* Background Watermark */}
               <div className="absolute -right-16 -bottom-16 opacity-[0.05] pointer-events-none select-none">
-                <img src="/logo.png" alt="" className="w-[400px] h-auto rotate-12" referrerPolicy="no-referrer" />
+                <img src="/logo.png" alt="" className="w-[400px] h-auto rotate-12" />
               </div>
               
               <div className="relative z-10 max-w-5xl mx-auto text-center space-y-12">

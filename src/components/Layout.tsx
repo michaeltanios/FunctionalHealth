@@ -38,7 +38,6 @@ export default function Layout({ children }: LayoutProps) {
               src="/logo.png" 
               alt="FunctionalHealth Logo" 
               className="h-10 md:h-14 w-auto transition-transform group-hover:scale-105"
-              referrerPolicy="no-referrer"
             />
             <span className="text-lg md:text-xl font-serif font-bold tracking-tight hidden sm:inline-block">
               <span className="text-functional-green">Functional</span>
@@ -139,7 +138,6 @@ export default function Layout({ children }: LayoutProps) {
                   src="/logo.png" 
                   alt="FunctionalHealth Logo" 
                   className="h-12 w-auto brightness-0 invert"
-                  referrerPolicy="no-referrer"
                 />
                 <span className="text-xl font-serif font-bold">
                   <span className="text-white">Functional</span>
