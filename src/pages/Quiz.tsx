@@ -83,7 +83,7 @@ export default function Quiz() {
       `;
 
       const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-1.5-flash",
         config: {
           systemInstruction: SYSTEM_INSTRUCTION + "\n\nYou are a clinical recovery expert. Your goal is to provide research-backed, individualized guidance while strictly adhering to safety and liability constraints.",
           tools: [{ googleSearch: {} }],
